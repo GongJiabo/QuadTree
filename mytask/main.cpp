@@ -179,7 +179,7 @@ int main()
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     
-    glBufferData(GL_ARRAY_BUFFER, pnum * 3 * sizeof(float), qtVertex, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, pnum * 3 * sizeof(float), qtVertex, GL_STATIC_DRAW);
     
 //    获取指定level上的顶点
 //    int level = 4;
