@@ -178,14 +178,9 @@ int main()
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //
     
     glBufferData(GL_ARRAY_BUFFER, pnum * 3 * sizeof(float), qtVertex, GL_STATIC_DRAW);
-    
-//    获取指定level上的顶点
-//    int level = 4;
-//    int pnum = numberOfPoints[level];
-//    float* vertex = vv[level];
-//    glBufferData(GL_ARRAY_BUFFER, pnum * 3 * sizeof(float), vertex, GL_STATIC_DRAW);
     
     // 告诉OpenGL该如何解析顶点数据
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
