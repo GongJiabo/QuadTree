@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
+		EAD131CC267B78C500C79A9E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EAD131CB267B78C500C79A9E /* glad.c */; };
+		EAD131D0267B79FE00C79A9E /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131CF267B79FE00C79A9E /* libglfw3.a */; };
+		EAD131D2267B7A3E00C79A9E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D1267B7A3E00C79A9E /* OpenGL.framework */; };
+		EAD131D4267B7B4700C79A9E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D3267B7B4700C79A9E /* CoreVideo.framework */; };
+		EAD131D6267B7B4E00C79A9E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D5267B7B4E00C79A9E /* IOKit.framework */; };
+		EAD131D8267B7B5500C79A9E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D7267B7B5500C79A9E /* Cocoa.framework */; };
+		EAD131DA267B7B6000C79A9E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D9267B7B6000C79A9E /* GLUT.framework */; };
+		EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +33,15 @@
 /* Begin PBXFileReference section */
 		EAD131C1267B783500C79A9E /* mytask */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mytask; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD131C4267B783500C79A9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		EAD131CB267B78C500C79A9E /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		EAD131CF267B79FE00C79A9E /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../../../usr/local/lib/libglfw3.a; sourceTree = "<group>"; };
+		EAD131D1267B7A3E00C79A9E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		EAD131D3267B7B4700C79A9E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		EAD131D5267B7B4E00C79A9E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		EAD131D7267B7B5500C79A9E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		EAD131D9267B7B6000C79A9E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadTree.cpp; sourceTree = "<group>"; };
+		EAD131DE267B7BBE00C79A9E /* QuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +49,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAD131DA267B7B6000C79A9E /* GLUT.framework in Frameworks */,
+				EAD131D2267B7A3E00C79A9E /* OpenGL.framework in Frameworks */,
+				EAD131D8267B7B5500C79A9E /* Cocoa.framework in Frameworks */,
+				EAD131D6267B7B4E00C79A9E /* IOKit.framework in Frameworks */,
+				EAD131D4267B7B4700C79A9E /* CoreVideo.framework in Frameworks */,
+				EAD131D0267B79FE00C79A9E /* libglfw3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +66,7 @@
 			children = (
 				EAD131C3267B783500C79A9E /* mytask */,
 				EAD131C2267B783500C79A9E /* Products */,
+				EAD131CE267B79FE00C79A9E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +81,33 @@
 		EAD131C3267B783500C79A9E /* mytask */ = {
 			isa = PBXGroup;
 			children = (
+				EAD131DC267B7BA500C79A9E /* Quad */,
+				EAD131CB267B78C500C79A9E /* glad.c */,
 				EAD131C4267B783500C79A9E /* main.cpp */,
 			);
 			path = mytask;
+			sourceTree = "<group>";
+		};
+		EAD131CE267B79FE00C79A9E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EAD131D9267B7B6000C79A9E /* GLUT.framework */,
+				EAD131D7267B7B5500C79A9E /* Cocoa.framework */,
+				EAD131D5267B7B4E00C79A9E /* IOKit.framework */,
+				EAD131D3267B7B4700C79A9E /* CoreVideo.framework */,
+				EAD131D1267B7A3E00C79A9E /* OpenGL.framework */,
+				EAD131CF267B79FE00C79A9E /* libglfw3.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EAD131DC267B7BA500C79A9E /* Quad */ = {
+			isa = PBXGroup;
+			children = (
+				EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */,
+				EAD131DE267B7BBE00C79A9E /* QuadTree.h */,
+			);
+			path = Quad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,6 +168,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAD131C5267B783500C79A9E /* main.cpp in Sources */,
+				EAD131CC267B78C500C79A9E /* glad.c in Sources */,
+				EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +290,13 @@
 		EAD131C9267B783500C79A9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"./**",
+					"/usr/local/include/**",
+				);
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,7 +304,9 @@
 		EAD131CA267B783500C79A9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
