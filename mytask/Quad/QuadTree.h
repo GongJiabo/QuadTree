@@ -22,6 +22,7 @@ const double RT_Y = 90.0;
 const int TREE_DEPTH = 8;
 const int CHILD_NUM = 4;
 
+
 struct Point
 {
     double x;

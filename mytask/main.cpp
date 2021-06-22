@@ -58,6 +58,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
 int main()
 {
     // Generate quadtree
+//    TREE_DEPTH = 4;
     QuadTree* qtree = NULL;
 //    qtree = CreateTreeByRandom();
     qtree = CreateTreeAllNodes();
@@ -175,23 +176,6 @@ int main()
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
 
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //
-    
-    glBufferData(GL_ARRAY_BUFFER, pnum * 3 * sizeof(float), qtVertex, GL_STATIC_DRAW);
-    
-    // 告诉OpenGL该如何解析顶点数据
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    glBindVertexArray(0);
     
     
     // uncomment this call to draw in wireframe polygons.
@@ -245,34 +229,55 @@ int main()
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
         
-        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         
         // 节点评价
         // 设置需要显示的depth阈值，最大显示的深度
         float l = abs(cameraPos[2]);
         int showDepth = static_cast<int>(level * 0.8 / l);
         
-        // 四个点一组绘制矩形
-        for(int i = 0; i < pnum / 4; ++i)
+        // 绘制两层
+        for(int renderDepth = showDepth, times = 0; times < 2; ++times, ++renderDepth)
         {
-            // 2021/6/21: TO BE OPTIMIZED
-            // 选择当前将要绘制的4个点，计算其中心点与camera的距离，以选择应该显示的四叉树深度
-            // 每个矩形tile的中心点
-            glm::vec4 centerPoint((qtVertex[12*i] + qtVertex[12*i+3]+qtVertex[12*i+6]+qtVertex[12*i+9])/4,
-                         (qtVertex[12*i+1] + qtVertex[12*i+4] + qtVertex[12*i+7] + qtVertex[12*i+10])/4,
-                         (qtVertex[12*i+2] + qtVertex[12*i+5] + qtVertex[12*i+8] + qtVertex[12*i+11])/4, 1.0f);
-            glm::vec4 scrPoint = projection * view * model * centerPoint;
-            int curDepth = qtDetph[i*4*3];
+            // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+            glBindVertexArray(VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, VBO);
             //
-            if((scrPoint.y > 0 && curDepth >= showDepth)) continue;
-            if((scrPoint.y < 0 && curDepth > showDepth)) continue;
- 
-            glDrawArrays(GL_LINE_LOOP, i*4, 4);
+            
+            glBufferData(GL_ARRAY_BUFFER, numberOfPoints[renderDepth] * 3 * sizeof(float), vv[renderDepth], GL_STATIC_DRAW);
+            
+            // 告诉OpenGL该如何解析顶点数据
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+            
+            // 父tile全部绘制
+            if(times == 0)
+            {
+                for(int i = 0; i < numberOfPoints[renderDepth] / 4; ++i)
+                {
+                    glDrawArrays(GL_LINE_LOOP, i*4, 4);
+                }
+            }
+            // 子tile选择屏幕下半部分绘制
+            else if(times == 1)
+            {
+                for(int i = 0; i < numberOfPoints[renderDepth] / 4; ++i)
+                {
+                    // 2021/6/21: TO BE OPTIMIZED
+                    // 选择当前将要绘制的4个点，计算其中心点与camera的距离，以选择应该显示的四叉树深度
+                    // 每个矩形tile的中心点
+                    glm::vec4 centerPoint((vv[renderDepth][12*i] +vv[renderDepth][12*i+3]+vv[renderDepth][12*i+6]+vv[renderDepth][12*i+9])/4,
+                                            (vv[renderDepth][12*i+1] + vv[renderDepth][12*i+4] + vv[renderDepth][12*i+7] +vv[renderDepth][12*i+10])/4,
+                                            (vv[renderDepth][12*i+2] + vv[renderDepth][12*i+5] + vv[renderDepth][12*i+8] +vv[renderDepth][12*i+11])/4, 1.0f);
+                    glm::vec4 scrPoint = projection * view * model * centerPoint;
+                    
+                    if(scrPoint.y <= 0)
+                        glDrawArrays(GL_LINE_LOOP, i*4, 4);
+                }
+            }
+            
+            glBindVertexArray(0); // no need to unbind it every time
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
-        
-        
-         glBindVertexArray(0); // no need to unbind it every time
- 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // 交换缓冲并查询IO事件
         // -----------------------------------------------------------------------  --------
@@ -299,7 +304,7 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     // camera position change
-    float cameraSpeed = 1.0f * deltaTime;   // adjust accordingly
+    float cameraSpeed = 0.6f * deltaTime;   // adjust accordingly
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
