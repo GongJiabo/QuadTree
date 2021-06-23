@@ -73,10 +73,10 @@ struct QuadTreeNode
     }
     Rect        rect;
     std::vector<PosInfo> pos_array;
-    int            child_num;                // 当前区域包含的点位信息
-    QuadTreeNode *child[CHILD_NUM];        // 子区域
-    int            depth;                    // 深度
-    unsigned int number = 0;            // 索引
+    int            child_num;               // 当前区域包含的点位信息
+    QuadTreeNode *child[CHILD_NUM];         // 子区域
+    int            depth;                   // 深度
+    unsigned int number = 0;                // 索引
 };
 
 class QuadTree 
