@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include "glad.h"
 #include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include "Quad/QuadTree.h"
+
+#include "Shader.h"
+#include "Camera.h"
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);          // 回调函数，监听鼠标移动事件
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset);  // 回调函数，监听鼠标滚轮事件
@@ -19,9 +22,9 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 800;
 
 // camera settings
-glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  1.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  1.5f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
+Camera camera(cameraPos, cameraUp);
 
 // render speed time
 float deltaTime = 0.0f; // 当前帧与上一帧的时间差
@@ -37,23 +40,6 @@ float fov   =  40.0f;
 
 // QuadTree
 QuadTree* qtree;
-
-// GLSL shader
-const char *vertexShaderSource = "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "uniform mat4 model;\n"
-    "uniform mat4 view;\n"
-    "uniform mat4 projection;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.8f, 0.2f, 1.0f);\n"
-    "}\n\0";
 
 int main()
 {
@@ -125,61 +111,16 @@ int main()
 
 
     // build and compile our shader program
+    Shader ourShader("/Users/jbgong/Desktop/mytask/mytask/glsl/shader.vs", "/Users/jbgong/Desktop/mytask/mytask/glsl/shader.fs");
+    
     // ------------------------------------
-    // vertex shader 顶点着色器
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    
-    // fragment shader 片段着色器
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    
-    // link shaders
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    unsigned int VBO, VAO;
-    
-    // Move into the loop
     // 设置顶点缓冲对象VBO与顶点数组对象VAO的ID
+    unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-
-    
     
     // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // render loop
     // -----------
@@ -204,36 +145,36 @@ int main()
         // change with time: (float)glfwGetTime() *
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-60.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         
         // view 观察矩阵
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+//        view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        view = camera.GetViewMatrix();
         
         // projection 投影矩阵  (地图平面为二平面，n与f的大小无关)
         glm::mat4 projection = glm::mat4(1.0f);;
-        projection = glm::perspective(glm::radians(fov), static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(camera.Zoom), static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
         
         // 查看相机位置和方向
 //        printCameraInfo();
         
         // draw our first triangle
-        glUseProgram(shaderProgram);
+        ourShader.use();
         
-        // 在把位置向量传给gl_Position之前，我们先添加一个uniform，并且将其与变换矩阵相乘
-        unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-        unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
-        unsigned int projectionLoc = glGetUniformLocation(shaderProgram, "projection");
         // 通过一致变量（uniform修饰的变量）引用将一致变量值传入渲染管线
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        
+        ourShader.setMat4("projection", projection);
+        ourShader.setMat4("view", view);
+        ourShader.setMat4("model", model);
         
         // 节点评价
-        // 设置需要显示的depth阈值，最大显示的深度
-        float l = abs(cameraPos[2]);
+        // 设置需要显示的depth阈值，父tile深度
+        float l = abs(camera.Position[2]);
         int showDepth = static_cast<int>(level * 0.8 / l);
+        showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
+        
+        // 输出当前绘制的四叉树层
+        std::cout << "Father's Tile Depth: " << showDepth <<"   Son's Tile Depth: " << showDepth + 1 << std::endl;
         
         // 绘制两层
         for(int renderDepth = showDepth, times = 0; times < 2; ++times, ++renderDepth)
@@ -253,9 +194,7 @@ int main()
             if(times == 0)
             {
                 for(int i = 0; i < numberOfPoints[renderDepth] / 4; ++i)
-                {
                     glDrawArrays(GL_LINE_LOOP, i*4, 4);
-                }
             }
             // 子tile选择屏幕下半部分绘制
             else if(times == 1)
@@ -269,7 +208,7 @@ int main()
                                             (vv[renderDepth][12*i+1] + vv[renderDepth][12*i+4] + vv[renderDepth][12*i+7] +vv[renderDepth][12*i+10])/4,
                                             (vv[renderDepth][12*i+2] + vv[renderDepth][12*i+5] + vv[renderDepth][12*i+8] +vv[renderDepth][12*i+11])/4, 1.0f);
                     glm::vec4 scrPoint = projection * view * model * centerPoint;
-                    
+//                    std::cout << scrPoint[0] << "  " << scrPoint[1] << "  " << scrPoint[2] << std::endl;
                     if(scrPoint.y <= 0)
                         glDrawArrays(GL_LINE_LOOP, i*4, 4);
                 }
@@ -289,8 +228,7 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
-
+    
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
@@ -304,15 +242,15 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     // camera position change
-    float cameraSpeed = 0.6f * deltaTime;   // adjust accordingly
+    float cameraSpeed = 0.8f * deltaTime;   // adjust accordingly
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(FORWARD, cameraSpeed);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(BACKWARD, cameraSpeed);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(LEFT, cameraSpeed);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(RIGHT, cameraSpeed);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -339,23 +277,11 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
-    float sensitivity = 0.04;
+    float sensitivity = 0.4;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
-
-    yaw   += xoffset;
-    pitch += yoffset;
-
-    if(pitch > 89.0f)
-        pitch = 89.0f;
-    if(pitch < -89.0f)
-        pitch = -89.0f;
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
+    
+    camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 
@@ -363,19 +289,14 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    // 改变视角fov
-    fov -= (float)yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 80.0f)
-        fov = 80.0f;
+    camera.ProcessMouseScroll(yoffset);
 }
 
 
 // 打印相机的位置以及方向
 void printCameraInfo()
 {
-    std::cout <<"CAMERA POS: " <<cameraPos.x <<"  "<<cameraPos.y<<"  "<<cameraPos.z<<std::endl;
-    std::cout <<"CAMERA DIR: " <<cameraFront.x <<"  "<<cameraFront.y<<"  "<<cameraFront.z<<std::endl;
+    std::cout <<"CAMERA POS: " <<camera.Position[0] << "  " <<camera.Position[1]<<"  "<<camera.Position[2]<<std::endl;
+    std::cout <<"CAMERA DIR: " <<camera.Front[0] << "  " <<camera.Front[1]<<"  "<<camera.Front[2] << std::endl;
     std::cout <<"-----------------------------"<< std::endl;
 }

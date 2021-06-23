@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA6AEA442682E4F6009BEC79 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
+		EA6AEA462682E4FB009BEC79 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA452682E4FB009BEC79 /* Cocoa.framework */; };
+		EA6AEA482682E50C009BEC79 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA472682E50C009BEC79 /* CoreVideo.framework */; };
+		EA6AEA4A2682E518009BEC79 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA492682E518009BEC79 /* IOKit.framework */; };
+		EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */; };
+		EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */; };
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
 		EAD131CC267B78C500C79A9E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EAD131CB267B78C500C79A9E /* glad.c */; };
-		EAD131D0267B79FE00C79A9E /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131CF267B79FE00C79A9E /* libglfw3.a */; };
-		EAD131D2267B7A3E00C79A9E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D1267B7A3E00C79A9E /* OpenGL.framework */; };
-		EAD131D4267B7B4700C79A9E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D3267B7B4700C79A9E /* CoreVideo.framework */; };
-		EAD131D6267B7B4E00C79A9E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D5267B7B4E00C79A9E /* IOKit.framework */; };
-		EAD131D8267B7B5500C79A9E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D7267B7B5500C79A9E /* Cocoa.framework */; };
-		EAD131DA267B7B6000C79A9E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAD131D9267B7B6000C79A9E /* GLUT.framework */; };
 		EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
 /* End PBXBuildFile section */
 
@@ -31,15 +31,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EA6AEA362682DC52009BEC79 /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		EA6AEA422682DF8A009BEC79 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		EA6AEA432682E4F6009BEC79 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		EA6AEA452682E4FB009BEC79 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		EA6AEA472682E50C009BEC79 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		EA6AEA492682E518009BEC79 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../opt/homebrew/Cellar/glfw/3.3.4/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
+		EA6AEA5326830742009BEC79 /* shader.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fs; sourceTree = "<group>"; };
+		EA6AEA5426830742009BEC79 /* shader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vs; sourceTree = "<group>"; };
 		EAD131C1267B783500C79A9E /* mytask */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mytask; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD131C4267B783500C79A9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EAD131CB267B78C500C79A9E /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
-		EAD131CF267B79FE00C79A9E /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../../../usr/local/lib/libglfw3.a; sourceTree = "<group>"; };
-		EAD131D1267B7A3E00C79A9E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		EAD131D3267B7B4700C79A9E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		EAD131D5267B7B4E00C79A9E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		EAD131D7267B7B5500C79A9E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		EAD131D9267B7B6000C79A9E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadTree.cpp; sourceTree = "<group>"; };
 		EAD131DE267B7BBE00C79A9E /* QuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,18 +53,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAD131DA267B7B6000C79A9E /* GLUT.framework in Frameworks */,
-				EAD131D2267B7A3E00C79A9E /* OpenGL.framework in Frameworks */,
-				EAD131D8267B7B5500C79A9E /* Cocoa.framework in Frameworks */,
-				EAD131D6267B7B4E00C79A9E /* IOKit.framework in Frameworks */,
-				EAD131D4267B7B4700C79A9E /* CoreVideo.framework in Frameworks */,
-				EAD131D0267B79FE00C79A9E /* libglfw3.a in Frameworks */,
+				EA6AEA4A2682E518009BEC79 /* IOKit.framework in Frameworks */,
+				EA6AEA482682E50C009BEC79 /* CoreVideo.framework in Frameworks */,
+				EA6AEA462682E4FB009BEC79 /* Cocoa.framework in Frameworks */,
+				EA6AEA442682E4F6009BEC79 /* OpenGL.framework in Frameworks */,
+				EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */,
+				EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA6AEA52268305F2009BEC79 /* glsl */ = {
+			isa = PBXGroup;
+			children = (
+				EA6AEA5326830742009BEC79 /* shader.fs */,
+				EA6AEA5426830742009BEC79 /* shader.vs */,
+			);
+			path = glsl;
+			sourceTree = "<group>";
+		};
 		EAD131B8267B783500C79A9E = {
 			isa = PBXGroup;
 			children = (
@@ -81,9 +94,12 @@
 		EAD131C3267B783500C79A9E /* mytask */ = {
 			isa = PBXGroup;
 			children = (
+				EA6AEA52268305F2009BEC79 /* glsl */,
 				EAD131DC267B7BA500C79A9E /* Quad */,
 				EAD131CB267B78C500C79A9E /* glad.c */,
 				EAD131C4267B783500C79A9E /* main.cpp */,
+				EA6AEA362682DC52009BEC79 /* Shader.h */,
+				EA6AEA422682DF8A009BEC79 /* Camera.h */,
 			);
 			path = mytask;
 			sourceTree = "<group>";
@@ -91,12 +107,12 @@
 		EAD131CE267B79FE00C79A9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EAD131D9267B7B6000C79A9E /* GLUT.framework */,
-				EAD131D7267B7B5500C79A9E /* Cocoa.framework */,
-				EAD131D5267B7B4E00C79A9E /* IOKit.framework */,
-				EAD131D3267B7B4700C79A9E /* CoreVideo.framework */,
-				EAD131D1267B7A3E00C79A9E /* OpenGL.framework */,
-				EAD131CF267B79FE00C79A9E /* libglfw3.a */,
+				EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */,
+				EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */,
+				EA6AEA492682E518009BEC79 /* IOKit.framework */,
+				EA6AEA472682E50C009BEC79 /* CoreVideo.framework */,
+				EA6AEA452682E4FB009BEC79 /* Cocoa.framework */,
+				EA6AEA432682E4F6009BEC79 /* OpenGL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -293,10 +309,15 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
 					"./**",
-					"/usr/local/include/**",
+					"$(glfw_header)/**",
+					"$(glew_header)/**",
 				);
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(glfw_lib)/**",
+					"$(glew_lib)/**",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -306,7 +327,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(glfw_lib)/**",
+					"$(glew_lib)/**",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
