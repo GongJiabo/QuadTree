@@ -208,7 +208,12 @@ vector<vector<QuadTreeNode*>> QuadTree::GetAllNodes_BFS(QuadTreeNode *p_node)
     }
     return res;
 }
-                             
+
+void QuadTree::SetMdepth(const int d)
+{
+    m_depth = d;
+}
+
 int QuadTree::GetIndex(PosInfo pos, QuadTreeNode *pNode)
 {
 	double start_x = pNode->rect.lb_x;
@@ -334,7 +339,7 @@ void QuadTree::CreateAllNodes()
 // 递归实现生成所有的子节点
 void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
 {
-    if(curDepth == TREE_DEPTH)
+    if(curDepth == m_depth)
         return;
     //
     double start_x = pNode->rect.lb_x;
@@ -385,9 +390,9 @@ QuadTree* CreateTreeByRandom()
     return qtree;
 }
 
-QuadTree* CreateTreeAllNodes()
+QuadTree* CreateTreeAllNodes(int depth)
 {
-    QuadTree* qtree = new QuadTree(TREE_DEPTH, MAX_OBJECT);
+    QuadTree* qtree = new QuadTree(depth, MAX_OBJECT);
     qtree->InitQuadTreeNode(Rect(LB_X, LB_Y, RT_X, RT_Y));
     qtree->CreateAllNodes();
     return qtree;

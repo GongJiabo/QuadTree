@@ -52,34 +52,8 @@ enum DRAW_TYPE
 int main()
 {
     // 设置绘制类型
-    dType = DRAW_TYPE::FOCUS;
+    dType = DRAW_TYPE::SCREEN;
     
-    // Generate quadtree
-    QuadTree* qtree = NULL;
-//    qtree = CreateTreeByRandom();
-    qtree = CreateTreeAllNodes();
-    
-    int allPoints = 0, allDepth = 0;                        // 所有顶点的个数
-    vector<int> numberOfPoints;                             // 每一层的顶点个数
-    allDepth = qtree->GetDepth();
-    vector<float*> vv = GetVertex_BFS(allPoints, qtree, numberOfPoints);
-    
-//    // 把之前定义的顶点数据复制到缓冲的内存中，用一个float*保存
-//    int level = 7, pnum = 0;                // pnum为指定depth后，所包含的顶点个数
-//    float* qtVertex = NULL;
-//    float* qtDetph = NULL;
-//    vector<float*> vinfo = GetArrayBylevel(level, vv, numberOfPoints, pnum);
-//    qtVertex = vinfo[0];
-//    qtDetph  = vinfo[1];
-//
-//    // 输出每个顶点qtVertex信息
-//    for(int i = 0; i < pnum ; ++i)
-//    {
-//        if(i%4==0) std::cout <<std::endl;
-//        // 2-LB 1-LU 0-RU 3-RB 从第三象限逆时针排布
-//        std::cout<< qtVertex[3*i] << "   " << qtVertex[3*i+1] << "   " << qtVertex[3*i+2] << std::endl;
-//        std::cout<< qtDetph[3*i] << "   " << qtDetph[3*i+1] << "   " << qtDetph[3*i+2] << std::endl;
-//    }
 
     // glfw: initialize and configure
     // ------------------------------
@@ -103,6 +77,7 @@ int main()
     }
     // 设置当前的窗口上下文
     glfwMakeContextCurrent(window);
+    //
     // 根据窗口大小动态改变
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     // GLFW隐藏鼠标指针并监听鼠标
@@ -155,11 +130,10 @@ int main()
         // change with time: (float)glfwGetTime() *
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         
         // view 观察矩阵
-        glm::mat4 view = glm::mat4(1.0f);
-        view = camera.GetViewMatrix();
+        glm::mat4 view = camera.GetViewMatrix();
         
         // projection 投影矩阵  (地图平面为二平面，n与f的大小无关)
         glm::mat4 projection = glm::mat4(1.0f);;
@@ -182,8 +156,17 @@ int main()
         int showDepth = static_cast<int>(TREE_DEPTH * 0.8 / l);
         showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
         
+        // Generate quadtree
+    //    qtree = CreateTreeByRandom();
+        qtree = CreateTreeAllNodes(showDepth + 1);
+        
+        int allPoints = 0, allDepth = 0;                        // 所有顶点的个数
+        vector<int> numberOfPoints;                             // 每一层的顶点个数
+        allDepth = qtree->GetDepth();
+        vector<float*> vv = GetVertex_BFS(allPoints, qtree, numberOfPoints);
+        
         // 输出当前绘制的四叉树层
-        // std::cout << "Father's Tile Depth: " << showDepth <<"   Son's Tile Depth: " << showDepth + 1 << std::endl;
+         std::cout << "Father's Tile Depth: " << showDepth <<"   Son's Tile Depth: " << showDepth + 1 << std::endl;
         
         // 绘制两层
         for(int renderDepth = showDepth, times = 0; times < 2; ++times, ++renderDepth)
@@ -216,23 +199,21 @@ int main()
                     glm::vec4 centerPoint((vv[renderDepth][12*i] +vv[renderDepth][12*i+3]+vv[renderDepth][12*i+6]+vv[renderDepth][12*i+9])/4,
                                             (vv[renderDepth][12*i+1] + vv[renderDepth][12*i+4] + vv[renderDepth][12*i+7] +vv[renderDepth][12*i+10])/4,
                                             (vv[renderDepth][12*i+2] + vv[renderDepth][12*i+5] + vv[renderDepth][12*i+8] +vv[renderDepth][12*i+11])/4, 1.0f);
-                    
+                    glm::vec4 scrPoint = view * model * centerPoint;
                     if(dType == DRAW_TYPE::SCREEN)
                     {
-                        glm::vec4 scrPoint = projection * view * model * centerPoint;
+                       scrPoint = projection * scrPoint;
                         if(scrPoint.y <= 0)
                             glDrawArrays(GL_LINE_LOOP, i*4, 4);
                     }
                     else if(dType == DRAW_TYPE::CAMERA)
                     {
-                        glm::vec4 scrPoint = view * model * centerPoint;
                         float dis = glm::distance(glm::vec3(0,0,0), glm::vec3(scrPoint[0], scrPoint[1], scrPoint[2]));
                         if(dis < 1.2f)
                             glDrawArrays(GL_LINE_LOOP, i*4, 4);
                     }
                     else if(dType == DRAW_TYPE::FOCUS)
                     {
-                        glm::vec4 scrPoint = view * model * centerPoint;
                         float angle = glm::dot(glm::normalize(camera.Front), glm::normalize(glm::vec3(scrPoint[0], scrPoint[1], scrPoint[2])));
                         if(angle > cos(glm::radians(20.0f)))
                             glDrawArrays(GL_LINE_LOOP, i*4, 4);
@@ -243,7 +224,10 @@ int main()
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-
+        // delete pointer
+        delete qtree;
+        for(auto& p:vv)
+            delete []p;
         
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // 交换缓冲并查询IO事件
@@ -287,6 +271,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and
     // height will be significantly larger than specified on retina displays.
+    // 自动进行视口变换
     glViewport(0, 0, width, height);
 }
 

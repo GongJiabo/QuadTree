@@ -117,6 +117,7 @@ public:
 	void Search(int num, PosInfo pos_source, std::vector<PosInfo> &pos_list, QuadTreeNode *p_node);
     void GetAllArea(std::vector<std::vector<double>>& area_list, QuadTreeNode *p_node);         // DFS
     vector<vector<QuadTreeNode*>> GetAllNodes_BFS(QuadTreeNode *p_node);                        // BFS
+    void SetMdepth(const int d);
     
 	QuadTree(int depth, int maxojects):m_depth(depth), m_maxobjects(maxojects), m_root(NULL){}
 	~QuadTree();
@@ -135,7 +136,7 @@ private:
 QuadTree* CreateTreeByRandom();
 
 // 生成最大深度的四叉树
-QuadTree* CreateTreeAllNodes();
+QuadTree* CreateTreeAllNodes(int depth);
 
 // 查找四叉树节点，返回搜索路径
 std::vector<PosInfo> SearchPoint(QuadTree* p_tree, int& pos_x, int& pos_y);
