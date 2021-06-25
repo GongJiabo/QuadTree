@@ -2,6 +2,7 @@
 
 QuadTree::~QuadTree()
 {
+//    std::cout<<"~QuadTree\n";
     delete m_root;
 }
 
@@ -278,15 +279,15 @@ void QuadTree::Remove(PosInfo pos, QuadTreeNode* p_node)
 // 	}
 }
 
-void QuadTree::Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *p_target)
+void QuadTree::Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *&p_target)
 {
 	if (p_start == NULL)
 	{
 		return;
 	}
 
-	p_target = p_start;
-
+    p_target = p_start;
+    
 	int index = GetIndex(pos, p_start);
 	if (index >= UR && index <= LR)
 	{
@@ -368,6 +369,35 @@ void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
         GenerateAllNodes(curDepth + 1, pNode->child[i]);
 }
 
+
+void QuadTree::GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node)
+{
+    // 查找pos所在的叶子节点
+    Find(pos, m_root, leaf_node);
+    //
+    double start_x = leaf_node->rect.lb_x;
+    double start_y = leaf_node->rect.lb_y;
+    double sub_width = (leaf_node->rect.rt_x - leaf_node->rect.lb_x) / 2;
+    double sub_height = (leaf_node->rect.rt_y - leaf_node->rect.lb_y) / 2;
+    double end_x = leaf_node->rect.rt_x;
+    double end_y = leaf_node->rect.rt_y;
+   //
+    QuadTreeNode *p_node0 = new QuadTreeNode;
+    QuadTreeNode *p_node1 = new QuadTreeNode;
+    QuadTreeNode *p_node2 = new QuadTreeNode;
+    QuadTreeNode *p_node3 = new QuadTreeNode;
+    
+    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+    
+    leaf_node->child[0] = p_node0;
+    leaf_node->child[1] = p_node1;
+    leaf_node->child[2] = p_node2;
+    leaf_node->child[3] = p_node3;
+    leaf_node->child_num = 4;
+}
 /*----------------------------*/
 
 QuadTree* CreateTreeByRandom()
@@ -447,28 +477,30 @@ vector<float*> GetVertex_BFS(int& pnum, QuadTree* qtree,vector<int>& numberOfPoi
         for(int j = 0; j < vvqtn[i].size(); ++j)
         {
             // LB
-            ptr[12*j  ] = vvqtn[i][j]->rect.lb_x/abs(RT_X);
-            ptr[12*j+1] = vvqtn[i][j]->rect.lb_y/abs(RT_Y);
+            ptr[12*j  ] = vvqtn[i][j]->rect.lb_x;
+            ptr[12*j+1] = vvqtn[i][j]->rect.lb_y;
             ptr[12*j+2] = 0.0;
 //            ptr[12*j+2] = static_cast<float>(vvqtn[i][j]->depth)/TREE_DEPTH;
             // LU
-            ptr[12*j+3] = vvqtn[i][j]->rect.lb_x/abs(RT_X);
-            ptr[12*j+4] = vvqtn[i][j]->rect.rt_y/abs(RT_Y);
+            ptr[12*j+3] = vvqtn[i][j]->rect.lb_x;
+            ptr[12*j+4] = vvqtn[i][j]->rect.rt_y;
             ptr[12*j+5] = 0.0;
 //            ptr[12*j+5] =  static_cast<float>(vvqtn[i][j]->depth)/TREE_DEPTH;
             // RU
-            ptr[12*j+6] = vvqtn[i][j]->rect.rt_x/abs(RT_X);
-            ptr[12*j+7] = vvqtn[i][j]->rect.rt_y/abs(RT_Y);
+            ptr[12*j+6] = vvqtn[i][j]->rect.rt_x;
+            ptr[12*j+7] = vvqtn[i][j]->rect.rt_y;
             ptr[12*j+8] = 0.0;
 //            ptr[12*j+8] = static_cast<float>(vvqtn[i][j]->depth)/TREE_DEPTH;
             // RB
-            ptr[12*j+9 ] = vvqtn[i][j]->rect.rt_x/abs(RT_X);
-            ptr[12*j+10] = vvqtn[i][j]->rect.lb_y/abs(RT_Y);
+            ptr[12*j+9 ] = vvqtn[i][j]->rect.rt_x;
+            ptr[12*j+10] = vvqtn[i][j]->rect.lb_y;
             ptr[12*j+11] = 0.0;
 //            ptr[12*j+11] = static_cast<float>(vvqtn[i][j]->depth)/TREE_DEPTH;
         }
         res.push_back(ptr);
     }
+    //free memory
+    vector<vector<QuadTreeNode*>>().swap(vvqtn);
     //
     return res;
 }
@@ -495,3 +527,26 @@ vector<float*> GetArrayBylevel(const int& level, const vector<float*>& vv, const
     return {vertex, depth};
 }
 
+// 根据QuadTreeNode返回保存四个角点坐标的数组
+float* GetArrayByTreeNode(QuadTreeNode* node)
+{
+    float* ptr = new float[12];
+    // LB
+    ptr[0] = node->rect.lb_x;
+    ptr[1] = node->rect.lb_y;
+    ptr[2] = 0.0;
+    // LU
+    ptr[3] = node->rect.lb_x;
+    ptr[4] = node->rect.rt_y;
+    ptr[5] = 0.0;
+    // RU
+    ptr[6] = node->rect.rt_x;
+    ptr[7] = node->rect.rt_y;
+    ptr[8] = 0.0;
+    // RB
+    ptr[9] = node->rect.rt_x;
+    ptr[10] = node->rect.lb_y;
+    ptr[11] = 0.0;
+    //
+    return ptr;
+}

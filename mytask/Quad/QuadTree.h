@@ -52,15 +52,17 @@ struct Rect
 struct PosInfo
 {
     PosInfo():latitude(0), longtitude(0){}
-    PosInfo(int la, int lo):latitude(la), longtitude(lo){}
-    int longtitude;
-    int latitude;
+    PosInfo(double la, double lo):latitude(la), longtitude(lo){}
+    double longtitude;
+    double latitude;
 };
+
 struct QuadTreeNode
 {
     QuadTreeNode(){}
     ~QuadTreeNode()
     {
+        // std::cout << "~QuadTreeNode -- Depth = " << depth << std::endl;
         pos_array.clear();
         for (int i = 0; i < CHILD_NUM; ++i)
         {
@@ -107,11 +109,14 @@ public:
 	void Insert(PosInfo pos, QuadTreeNode *p_node);
 	int  GetIndex(PosInfo pos, QuadTreeNode *p_node);
 	void Remove(PosInfo pos, QuadTreeNode *p_node);
-	void Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *p_target);
+	void Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *&p_target);
 	void PrintAllQuadTreeLeafNode(QuadTreeNode *p_node);
+    
     // 根据指定深度depth，生成四叉树所有的子节点
     void CreateAllNodes();
     void GenerateAllNodes(int curDepth, QuadTreeNode* pNode);
+    // 根据所查询的位置，返回查询到的该点所属的叶子节点，并声称该叶子节点的下一层(child)
+    void GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node);
     
 	//
 	void Search(int num, PosInfo pos_source, std::vector<PosInfo> &pos_list, QuadTreeNode *p_node);
@@ -147,6 +152,8 @@ vector<float*> GetVertex_BFS(int& pnum, QuadTree* qtree,vector<int>& numberOfPoi
 // 根据需要显示的depth返回float数组
 vector<float*> GetArrayBylevel(const int& level, const vector<float*>& vv, const vector<int>& numberOfPoints, int& pnum);
 
+// 根据QuadTreeNode返回保存四个角点坐标的数组
+float* GetArrayByTreeNode(QuadTreeNode* node);
 
 
 #endif
