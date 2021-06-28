@@ -19,7 +19,7 @@ const double LB_X = -180.0;
 const double LB_Y = -90.0;
 const double RT_X = 180.0;
 const double RT_Y = 90.0;
-const int TREE_DEPTH = 8;
+const int TREE_DEPTH = 12;
 const int CHILD_NUM = 4;
 
 
@@ -116,8 +116,8 @@ public:
     void CreateAllNodes();
     void GenerateAllNodes(int curDepth, QuadTreeNode* pNode);
     // 根据所查询的位置，返回查询到的该点所属的叶子节点，并声称该叶子节点的下一层(child)
-    void GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node);
-    
+    void GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int moreDepth);
+    void GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, int curDepth, const int moreDepth);
 	//
 	void Search(int num, PosInfo pos_source, std::vector<PosInfo> &pos_list, QuadTreeNode *p_node);
     void GetAllArea(std::vector<std::vector<double>>& area_list, QuadTreeNode *p_node);         // DFS
@@ -149,8 +149,8 @@ std::vector<PosInfo> SearchPoint(QuadTree* p_tree, int& pos_x, int& pos_y);
 // BFS获取qtree中所有的矩形顶点，按顺序返回float数组
 vector<float*> GetVertex_BFS(int& pnum, QuadTree* qtree,vector<int>& numberOfPoints);
 
-// 根据需要显示的depth返回float数组
-vector<float*> GetArrayBylevel(const int& level, const vector<float*>& vv, const vector<int>& numberOfPoints, int& pnum);
+// 获取四叉树根节点顶点组成的float数组
+float* GetVertex_LeafNode(int& leafPointNum, QuadTreeNode* node);
 
 // 根据QuadTreeNode返回保存四个角点坐标的数组
 float* GetArrayByTreeNode(QuadTreeNode* node);

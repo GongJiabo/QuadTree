@@ -370,11 +370,20 @@ void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
 }
 
 
-void QuadTree::GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node)
+void QuadTree::GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int moreDepth)
 {
     // 查找pos所在的叶子节点
+    QuadTreeNode* leaf_node = NULL;
     Find(pos, m_root, leaf_node);
     //
+    GenerateMoreInNode(pos, leaf_node, vqnode, 0, moreDepth);
+
+}
+
+void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, int curTimes, const int moreDepth)
+{
+    if(curTimes == moreDepth || !leaf_node)
+        return;
     double start_x = leaf_node->rect.lb_x;
     double start_y = leaf_node->rect.lb_y;
     double sub_width = (leaf_node->rect.rt_x - leaf_node->rect.lb_x) / 2;
@@ -386,6 +395,11 @@ void QuadTree::GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node)
     QuadTreeNode *p_node1 = new QuadTreeNode;
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
+    //
+    vqnode.push_back(p_node0);
+    vqnode.push_back(p_node1);
+    vqnode.push_back(p_node2);
+    vqnode.push_back(p_node3);
     
     CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
     CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
@@ -397,7 +411,11 @@ void QuadTree::GenerateNextLevelByPoint(PosInfo pos, QuadTreeNode*& leaf_node)
     leaf_node->child[2] = p_node2;
     leaf_node->child[3] = p_node3;
     leaf_node->child_num = 4;
+    //
+    int index = GetIndex(pos, leaf_node);
+    GenerateMoreInNode(pos, leaf_node->child[index], vqnode, curTimes+1, moreDepth);
 }
+
 /*----------------------------*/
 
 QuadTree* CreateTreeByRandom()
@@ -505,26 +523,51 @@ vector<float*> GetVertex_BFS(int& pnum, QuadTree* qtree,vector<int>& numberOfPoi
     return res;
 }
 
-// 根据需要显示的depth返回float数组
-vector<float*> GetArrayBylevel(const int& level, const vector<float*>& vv, const vector<int>& numberOfPoints, int& pnum)
+float* GetVertex_LeafNode(int& leafPointNum, QuadTreeNode* node)
 {
-    vector<float> vvertex;
-    vector<float> vdepth;
-    for(int i = 0; i <= level && i < vv.size(); ++i)
+    vector<float*> vres;
+    leafPointNum = 0;
+    //
+    if(!node)
+        return NULL;
+    queue<QuadTreeNode*> q;
+    q.push(node);
+    //
+    while(!q.empty())
     {
-        pnum += numberOfPoints[i];
-        for(int j = 0; j < numberOfPoints[i] * 3; ++j)
-        {
-            vvertex.push_back(vv[i][j]);
-            vdepth.push_back(i);
-        }
-        
+        QuadTreeNode* tmp = q.front();
+        q.pop();
+        // 判断是否是叶子节点
+        if(tmp->child_num == 0)
+            vres.push_back(GetArrayByTreeNode(tmp));
+        //
+        for(int i = 0; i < tmp->child_num; ++i)
+            q.push(tmp->child[i]);
     }
-    float* vertex = new float[pnum * 3];
-    memcpy(vertex, &vvertex[0], vvertex.size()*sizeof(vvertex[0]));
-    float* depth = new float[pnum * 3];
-    memcpy(depth, &vdepth[0], vdepth.size()*sizeof(vdepth[0]));
-    return {vertex, depth};
+    // trans vres -> float*
+    leafPointNum = static_cast<int>(vres.size()) * 4;
+    float* res = new float[leafPointNum*3];
+    // 每个叶子节点保存4个顶点，12个坐标值
+    for(int i = 0; i < static_cast<int>(vres.size()); ++i)
+    {
+        res[12*i + 0] = vres[i][0];
+        res[12*i + 1] = vres[i][1];
+        res[12*i + 2] = vres[i][2];
+        res[12*i + 3] = vres[i][3];
+        res[12*i + 4] = vres[i][4];
+        res[12*i + 5] = vres[i][5];
+        res[12*i + 6] = vres[i][6];
+        res[12*i + 7] = vres[i][7];
+        res[12*i + 8] = vres[i][8];
+        res[12*i + 9] = vres[i][9];
+        res[12*i + 10] = vres[i][10];
+        res[12*i + 11] = vres[i][11];
+        delete[] vres[i];
+        vres[i] = NULL;
+    }
+    // 释放vector内存
+    vector<float*>().swap(vres);
+    return res;
 }
 
 // 根据QuadTreeNode返回保存四个角点坐标的数组

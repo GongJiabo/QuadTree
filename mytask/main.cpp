@@ -19,17 +19,18 @@ void printCameraInfo();
 
 // 生成四叉树并绘制方案1: 生成满四叉树，根据节点评价部分现实子tile
 // 引用传参 减少内存约6m
-void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree*& qtree,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model);
+void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader);
 // 生成四叉树并绘制方案2: 生成倒数二层为满的四叉树，最后一层根据节点评价生成tile
-void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree*& qtree,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model);
+void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 800;
 
 // camera settings
+// front方向默认为(0.0f,0.0f,-1.0f)
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  1.5f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
 Camera camera(cameraPos, cameraUp);
@@ -47,7 +48,7 @@ float lastY =  SCR_HEIGHT / 2.0;
 float fov   =  40.0f;
 
 // QuadTree
-QuadTree* qtree;
+QuadTree* qtree = NULL;
 
 // Draw type
 enum DRAW_TYPE
@@ -60,8 +61,7 @@ enum DRAW_TYPE
 int main()
 {
     // 设置绘制类型
-    dType = DRAW_TYPE::FOCUS;
-    
+    dType = DRAW_TYPE::SCREEN;
 
     // glfw: initialize and configure
     // ------------------------------
@@ -77,6 +77,7 @@ int main()
     // glfw window creation
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -120,30 +121,24 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
-        // --------------------
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
         // input
-        // -----
         processInput(window);
 
         // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         // create transformations
-        // change with time: (float)glfwGetTime() *
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
-        
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();
-        
         // projection 投影矩阵  (地图平面为二平面，n与f的大小无关)
         glm::mat4 projection = glm::mat4(1.0f);;
         projection = glm::perspective(glm::radians(camera.Zoom), static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT), 0.5f, -100.0f);
@@ -162,14 +157,12 @@ int main()
         // 节点评价
         // 设置需要显示的depth阈值，父tile深度
         float l = abs(camera.Position[2]);
-        int showDepth = static_cast<int>(TREE_DEPTH * 0.8 / l);
+        int showDepth = static_cast<int>(TREE_DEPTH * 0.4 / l);
         showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
     
         // 生成四叉树并绘制
-        drawTwoLayer(VBO, VAO, showDepth, qtree, projection, view, model);
-//        drawTwoLater_dynLast(VBO, VAO, showDepth, qtree, projection, view, model);
-        
-  
+        drawTwoLayer(VBO, VAO, showDepth, projection, view, model, ourShader);
+//        drawTwoLater_dynLast(VBO, VAO, showDepth, projection, view, model, ourShader);
         
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // 交换缓冲并查询IO事件
@@ -205,6 +198,12 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(LEFT, cameraSpeed);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, cameraSpeed);
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        dType = DRAW_TYPE::SCREEN;
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        dType = DRAW_TYPE::CAMERA;
+    if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+        dType = DRAW_TYPE::FOCUS;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -247,8 +246,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
     camera.ProcessMouseScroll(yoffset);
 }
 
-void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree*& qtree,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model)
+void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
 {
     // Generate quadtree
 //    qtree = CreateTreeByRandom();
@@ -265,6 +264,9 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree
     // 绘制两层
     for(int renderDepth = showDepth, times = 0; times < 2; ++times, ++renderDepth)
     {
+        // set shader color
+        ourShader.setVec4("inColor", glm::vec4(0.15f * renderDepth, 0.8f - times/5.0f, cos(renderDepth*2), 1.0f));
+        
         // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -309,14 +311,12 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree
                 }
                 else if(dType == DRAW_TYPE::FOCUS)
                 {
-                    float angle = glm::dot(glm::normalize(camera.Front), glm::normalize(glm::vec3(scrPoint[0], scrPoint[1], scrPoint[2])));
+                    float angle = glm::dot(glm::vec3(0.0f,0.0f,-1.0f), glm::normalize(glm::vec3(scrPoint[0], scrPoint[1], scrPoint[2])));
                     if(angle > cos(glm::radians(15.0f)))
                         glDrawArrays(GL_LINE_LOOP, i*4, 4);
                 }
             }
         }
-        glBindVertexArray(0); // no need to unbind it every time
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     // delete pointer
     delete qtree;
@@ -334,65 +334,89 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree
     //
 }
 
-void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth, QuadTree*& qtree,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model)
+void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
 {
+//    showDepth -= 1;
     // Generate quadtree
 //    qtree = CreateTreeByRandom();
     qtree = CreateTreeAllNodes(showDepth);
     
-    int allPoints = 0, allDepth = 0;                        // 所有顶点的个数
-    vector<int> numberOfPoints;                             // 每一层的顶点个数
-    allDepth = qtree->GetDepth();
-    vector<float*> vv = GetVertex_BFS(allPoints, qtree, numberOfPoints);
-    
+    int leafPointNum = 0;
+    float* ptrLeaf = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
+
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     //
     
-    glBufferData(GL_ARRAY_BUFFER, numberOfPoints[showDepth] * 3 * sizeof(float), vv[showDepth], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, leafPointNum * 3 * sizeof(float), ptrLeaf, GL_STATIC_DRAW);
     
     // 告诉OpenGL该如何解析顶点数据
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
-    // 父tile全部绘制
-    for(int i = 0; i < numberOfPoints[showDepth] / 4; ++i)
+    // 设置着色器颜色并绘制底图
+    ourShader.setVec4("inColor", glm::vec4(0.1f, 0.8f, 0.6f, 1.0f));
+    for(int i = 0; i < leafPointNum / 4; ++i)
             glDrawArrays(GL_LINE_LOOP, i*4, 4);
-    
-    // 根据视点生成以下层的节点, 动态生成四叉树
-    // 将视角中心点转换到地图中，插入下一level
-    // ??? 逆变换回去z值不为0？
-    glm::mat4 inv = glm::mat4(1.0f) / (projection * view * model);
-    float r = 0.5;
-    for(float i = -r; i <= r ; i += 0.05)
+    //
+    // 寻找需要细分的四叉树节点, 生成子树 depth > showDepth
+    for(int i = 0; i < leafPointNum / 4; ++i)
     {
-        for(float j = -r; j <= r; j +=0.05)
+        // 2021/6/21: TO BE OPTIMIZED
+        // 选择当前将要绘制的4个点，计算其中心点与camera的距离，以选择应该显示的四叉树深度
+        // 每个矩形tile的中心点
+        glm::vec4 centerPoint((ptrLeaf[12*i] +ptrLeaf[12*i+3]+ptrLeaf[12*i+6]+ptrLeaf[12*i+9])/4.0,
+                                (ptrLeaf[12*i+1] + ptrLeaf[12*i+4] + ptrLeaf[12*i+7] +ptrLeaf[12*i+10])/4.0,
+                                (ptrLeaf[12*i+2] + ptrLeaf[12*i+5] + ptrLeaf[12*i+8] +ptrLeaf[12*i+11])/4.0, 1.0f);
+
+        glm::vec4 scrPoint = view * model * centerPoint;
+        // 动态生成四叉树
+        if(dType == DRAW_TYPE::SCREEN)
         {
-            if(i*i + j*j > r*r) continue;;
-            glm::vec4 centerPoint_eye = inv * (glm::vec4(i, j, 0.0f, 1.0f));
-            centerPoint_eye.x /= centerPoint_eye.w;
-            centerPoint_eye.y /= centerPoint_eye.w;
-            centerPoint_eye.z /= centerPoint_eye.w;
-            centerPoint_eye.w = 1.0f;
-            // 该点所在的四叉树叶子节点split
-            QuadTreeNode *leaf;
-            qtree->GenerateNextLevelByPoint(PosInfo(centerPoint_eye.y, centerPoint_eye.x), leaf);
-            float* vnext = GetArrayByTreeNode(leaf);
-
-            glBindVertexArray(VAO);
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
+            // TO DO ...
+        }
+        
+        else if(dType == DRAW_TYPE::CAMERA)
+        {
+            // TO DO ...
+        }
+        
+        else if(dType == DRAW_TYPE::FOCUS)
+        {
+            // 符合与视线方向（屏幕中央）点与rect中心点满足一定夹角的点
+            float angle = glm::dot(glm::vec3(0.0f,0.0f,-1.0f), glm::normalize(glm::vec3(scrPoint[0], scrPoint[1], scrPoint[2])));
+            
+            // 如此判断并不科学, 可能所有的中心点夹角均不满足条件
+            // 应该寻找夹角最小的中心点
+            // TO DO ...
+            if(angle < cos(glm::radians(3.0f)))
+                continue;
             //
-
-            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vnext, GL_STATIC_DRAW);
-
-            // 告诉OpenGL该如何解析顶点数据
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-            glEnableVertexAttribArray(0);
-
-            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            vector<QuadTreeNode*> vqnode;
+            qtree->GenerateMoreByPoint(PosInfo(centerPoint[1], centerPoint[0]), vqnode, 4);
+            for(int i = 0; i < vqnode.size(); ++i)
+            {
+                
+                ourShader.setVec4("inColor", glm::vec4(0.15f * vqnode[i]->depth, 1.0f - 0.1 * vqnode[i]->depth, cos(vqnode[i]->depth), 1.0f));
+                float* ptrOneNode = GetArrayByTreeNode(vqnode[i]);
+                glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptrOneNode , GL_STATIC_DRAW);
+                glDrawArrays(GL_LINE_LOOP, 0, 4);
+            }
+            // free memory
+            vqnode.clear();
+            vector<QuadTreeNode*>().swap(vqnode);
+            //
+            break;
         }
     }
+    
+    // delete pointer
+    delete qtree;
+    qtree = NULL;
+    delete ptrLeaf;
+    ptrLeaf = NULL;
+
     glBindVertexArray(0); // no need to unbind it every time
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 //
