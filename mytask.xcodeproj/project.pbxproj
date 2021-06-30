@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA6AEA442682E4F6009BEC79 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
-		EA6AEA462682E4FB009BEC79 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA452682E4FB009BEC79 /* Cocoa.framework */; };
-		EA6AEA482682E50C009BEC79 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA472682E50C009BEC79 /* CoreVideo.framework */; };
-		EA6AEA4A2682E518009BEC79 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA492682E518009BEC79 /* IOKit.framework */; };
+		EA43E5E5268AFA210029A110 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA452682E4FB009BEC79 /* Cocoa.framework */; };
+		EA43E5E8268AFA220029A110 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA472682E50C009BEC79 /* CoreVideo.framework */; };
+		EA43E5EA268AFA240029A110 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA492682E518009BEC79 /* IOKit.framework */; };
+		EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
 		EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */; };
 		EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */; };
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
@@ -53,12 +53,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA6AEA4A2682E518009BEC79 /* IOKit.framework in Frameworks */,
-				EA6AEA482682E50C009BEC79 /* CoreVideo.framework in Frameworks */,
-				EA6AEA462682E4FB009BEC79 /* Cocoa.framework in Frameworks */,
-				EA6AEA442682E4F6009BEC79 /* OpenGL.framework in Frameworks */,
+				EA43E5E5268AFA210029A110 /* Cocoa.framework in Frameworks */,
 				EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */,
 				EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */,
+				EA43E5E8268AFA220029A110 /* CoreVideo.framework in Frameworks */,
+				EA43E5EA268AFA240029A110 /* IOKit.framework in Frameworks */,
+				EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

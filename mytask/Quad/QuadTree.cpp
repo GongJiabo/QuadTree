@@ -41,7 +41,7 @@ void QuadTree::Split(QuadTreeNode *pNode)
 
 	double start_x = pNode->rect.lb_x;
 	double start_y = pNode->rect.lb_y;
-    //   均分四块
+    // 均分四块
 	double sub_width = (pNode->rect.rt_x - pNode->rect.lb_x) / 2;
 	double sub_height = (pNode->rect.rt_y - pNode->rect.lb_y) / 2;
     
@@ -269,14 +269,14 @@ void QuadTree::Remove(PosInfo pos, QuadTreeNode* p_node)
 		return;
 	}
 
-// 	for (std::vector<PosInfo>::iterator it = p_node->pos_array.begin(); it != p_node->pos_array.end(); ++it)
-// 	{
-// 		if (pos.user_id == (*it).user_id)
-// 		{
-// 			p_node->pos_array.erase(it);
-// 			break;
-// 		}
-// 	}
+ 	for (std::vector<PosInfo>::iterator it = p_node->pos_array.begin(); it != p_node->pos_array.end(); ++it)
+ 	{
+ 		if (pos.user_id == (*it).user_id)
+ 		{
+ 			p_node->pos_array.erase(it);
+ 			break;
+ 		}
+ 	}
 }
 
 void QuadTree::Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *&p_target)
@@ -340,7 +340,7 @@ void QuadTree::CreateAllNodes()
 // 递归实现生成所有的子节点
 void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
 {
-    if(curDepth == m_depth)
+    if(curDepth >= m_depth)
         return;
     //
     double start_x = pNode->rect.lb_x;
@@ -370,19 +370,24 @@ void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
 }
 
 
-void QuadTree::GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int moreDepth)
+void QuadTree::GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int dstDepth)
 {
+    // 判断pos的范围
+    if(abs(pos.latitude) > RT_Y || abs(pos.longtitude) > RT_X)
+        return;
+    
     // 查找pos所在的叶子节点
     QuadTreeNode* leaf_node = NULL;
     Find(pos, m_root, leaf_node);
-    //
-    GenerateMoreInNode(pos, leaf_node, vqnode, 0, moreDepth);
+    
+    // 对找到的leaf_node生成到指定深度dstDepth的子树
+    GenerateMoreInNode(pos, leaf_node, vqnode, dstDepth);
 
 }
 
-void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, int curTimes, const int moreDepth)
+void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, const int dstDepth)
 {
-    if(curTimes == moreDepth || !leaf_node)
+    if(!leaf_node || leaf_node->depth >= dstDepth )
         return;
     double start_x = leaf_node->rect.lb_x;
     double start_y = leaf_node->rect.lb_y;
@@ -413,7 +418,53 @@ void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<
     leaf_node->child_num = 4;
     //
     int index = GetIndex(pos, leaf_node);
-    GenerateMoreInNode(pos, leaf_node->child[index], vqnode, curTimes+1, moreDepth);
+    GenerateMoreInNode(pos, leaf_node->child[index], vqnode, dstDepth);
+}
+
+void QuadTree::CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy)
+{
+    double lbx = minx < -180.0 ? -180.0 : minx;
+    double rtx = maxx > 180.0 ? 180.0 : maxx;
+    double lby = miny < -90.0 ? -90.0 : miny;
+    double rty = maxy > 90.0 ? 90.0 : maxy;
+    //
+    GenerateNodesByMRB(lbx, rtx, lby, rty, m_root);
+}
+
+void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, QuadTreeNode* pNode)
+{
+    // 判断深度
+    if(pNode->depth >= m_depth)
+        return;
+    // 当前pNode的rect 在 MBR 不相交/外部
+    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
+        return;
+    
+    // 生成子节点并递归
+    double start_x = pNode->rect.lb_x;
+    double start_y = pNode->rect.lb_y;
+    double sub_width = (pNode->rect.rt_x - pNode->rect.lb_x) / 2;
+    double sub_height = (pNode->rect.rt_y - pNode->rect.lb_y) / 2;
+    double end_x = pNode->rect.rt_x;
+    double end_y = pNode->rect.rt_y;
+   //
+    QuadTreeNode *p_node0 = new QuadTreeNode;
+    QuadTreeNode *p_node1 = new QuadTreeNode;
+    QuadTreeNode *p_node2 = new QuadTreeNode;
+    QuadTreeNode *p_node3 = new QuadTreeNode;
+    
+    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+
+    pNode->child[0] = p_node0;
+    pNode->child[1] = p_node1;
+    pNode->child[2] = p_node2;
+    pNode->child[3] = p_node3;
+    pNode->child_num = 4;
+    for(int i = 0; i < CHILD_NUM; ++i)
+        GenerateNodesByMRB(minx, maxx, miny, maxy, pNode->child[i]);
 }
 
 /*----------------------------*/
@@ -424,7 +475,7 @@ QuadTree* CreateTreeByRandom()
     qtree->InitQuadTreeNode(Rect(LB_X, LB_Y, RT_X, RT_Y));
 
 
-//    srand((unsigned)time(NULL));
+    srand((unsigned)time(NULL));
     for (int i = 0; i < RAND_NUM; ++i)
     {
         PosInfo pos;
@@ -443,6 +494,14 @@ QuadTree* CreateTreeAllNodes(int depth)
     QuadTree* qtree = new QuadTree(depth, MAX_OBJECT);
     qtree->InitQuadTreeNode(Rect(LB_X, LB_Y, RT_X, RT_Y));
     qtree->CreateAllNodes();
+    return qtree;
+}
+
+QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, int depth)
+{
+    QuadTree* qtree = new QuadTree(depth, MAX_OBJECT);
+    qtree->InitQuadTreeNode(Rect(LB_X, LB_Y, RT_X, RT_Y));
+    qtree->CreateNodesByMBR(minx, maxx, miny, maxy);
     return qtree;
 }
 
@@ -566,6 +625,7 @@ float* GetVertex_LeafNode(int& leafPointNum, QuadTreeNode* node)
         vres[i] = NULL;
     }
     // 释放vector内存
+    vres.clear();
     vector<float*>().swap(vres);
     return res;
 }

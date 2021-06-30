@@ -1,0 +1,58 @@
+{
+  "_buildCommand2" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "buildCommand" : "build",
+  "configuredTargets" : [
+    {
+      "guid" : "7568d5adaf37847b82e4fa80fa49f1ea007b19d115d940537ce811580155bfba"
+    }
+  ],
+  "containerPath" : "/Users/jbgong/Desktop/mytask/mytask.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "platform" : "macosx",
+      "sdk" : "macosx12.0",
+      "sdkVariant" : "macos",
+      "supportedArchitectures" : [
+        "arm64e",
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/jbgong/Desktop/mytask/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/jbgong/Desktop/mytask/Build/Products",
+      "derivedDataPath" : "/Users/jbgong/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/jbgong/Library/Developer/Xcode/DerivedData/mytask-briuxnibbbyacybgtmxqhgtnmmcc/Index/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/jbgong/Library/Developer/Xcode/DerivedData/mytask-briuxnibbbyacybgtmxqhgtnmmcc/Index/PrecompiledHeaders",
+      "pchPath" : "/Users/jbgong/Desktop/mytask/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Release",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "launch",
+  "schemeCommand2" : "profile",
+  "shouldCollectMetrics" : false,
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

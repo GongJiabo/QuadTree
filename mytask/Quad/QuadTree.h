@@ -25,6 +25,7 @@ const int CHILD_NUM = 4;
 
 struct Point
 {
+    Point():x(0),y(0),z(0),depth(0) {}
     double x;
     double y;
     double z;
@@ -51,34 +52,39 @@ struct Rect
 
 struct PosInfo
 {
-    PosInfo():latitude(0), longtitude(0){}
+    PosInfo():latitude(0), longtitude(0), user_id(""){}
     PosInfo(double la, double lo):latitude(la), longtitude(lo){}
     double longtitude;
     double latitude;
+    string user_id;
 };
 
 struct QuadTreeNode
 {
-    QuadTreeNode(){}
+    QuadTreeNode():rect(), child_num(0), depth(0), number(0)
+    {
+        pos_array.clear();
+        for(auto& p : child)
+            p = NULL;
+    }
     ~QuadTreeNode()
     {
         // std::cout << "~QuadTreeNode -- Depth = " << depth << std::endl;
         pos_array.clear();
         for (int i = 0; i < CHILD_NUM; ++i)
         {
-            if (child[i] == NULL)
-            {
-                break;
-            }
+            // c++ 中删除空指针没影响
             delete child[i];
+            child[i] = NULL;
         }
     }
+    
     Rect        rect;
     std::vector<PosInfo> pos_array;
     int            child_num;               // 当前区域包含的点位信息
     QuadTreeNode *child[CHILD_NUM];         // 子区域
     int            depth;                   // 深度
-    unsigned int number = 0;                // 索引
+    unsigned int number;                    // 索引
 };
 
 class QuadTree 
@@ -102,6 +108,7 @@ public:
 		LR = 3,
 	};
 	
+    void SetMdepth(const int d);
 	void InitQuadTree(int depth, int max_objects);
 	void InitQuadTreeNode(Rect rect);
 	void CreateQuadTreeNode(int depth, Rect rect, QuadTreeNode *p_node);
@@ -112,17 +119,23 @@ public:
 	void Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *&p_target);
 	void PrintAllQuadTreeLeafNode(QuadTreeNode *p_node);
     
-    // 根据指定深度depth，生成四叉树所有的子节点
+    // 生成四叉树所有的子节点(满四叉树 深度为m_depth)
     void CreateAllNodes();
     void GenerateAllNodes(int curDepth, QuadTreeNode* pNode);
-    // 根据所查询的位置，返回查询到的该点所属的叶子节点，并声称该叶子节点的下一层(child)
-    void GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int moreDepth);
-    void GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, int curDepth, const int moreDepth);
+    
+    // 根据指定MBR区域(minx, maxx, miny, maxy) 生成区域内的四叉树节点
+    void CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy);
+    void GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, QuadTreeNode* pNode);
+    
+    // 根据所查询的位置，返回查询到的该点所属的叶子节点，并生成该叶子节点的下一层(child)
+    void GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int dstDepth);
+    void GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<QuadTreeNode*>& vqnode, const int dstDepth);
 	//
 	void Search(int num, PosInfo pos_source, std::vector<PosInfo> &pos_list, QuadTreeNode *p_node);
+    
     void GetAllArea(std::vector<std::vector<double>>& area_list, QuadTreeNode *p_node);         // DFS
     vector<vector<QuadTreeNode*>> GetAllNodes_BFS(QuadTreeNode *p_node);                        // BFS
-    void SetMdepth(const int d);
+
     
 	QuadTree(int depth, int maxojects):m_depth(depth), m_maxobjects(maxojects), m_root(NULL){}
 	~QuadTree();
@@ -130,6 +143,7 @@ public:
 	QuadTreeNode* GetTreeRoot() { return m_root; }
 	int			  GetDepth() { return m_depth; }
 	int			  GetMaxObjects() { return m_maxobjects; }
+    
 private:
 	int m_depth;				
 	int m_maxobjects;		
@@ -140,8 +154,11 @@ private:
 // 随机生成四叉树
 QuadTree* CreateTreeByRandom();
 
-// 生成最大深度的四叉树
+// 生成指定深度的depth满四叉树(所有孩子节点为满)
 QuadTree* CreateTreeAllNodes(int depth);
+
+// 根据PosInfo的范围(屏幕四个顶点)生成四叉树
+QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, int depth);
 
 // 查找四叉树节点，返回搜索路径
 std::vector<PosInfo> SearchPoint(QuadTree* p_tree, int& pos_x, int& pos_y);
