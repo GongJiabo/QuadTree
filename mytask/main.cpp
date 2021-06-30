@@ -686,7 +686,6 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     int leafPointNum = 0;
     float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
-    
     // 绑定VAO VBO
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
