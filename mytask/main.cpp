@@ -260,7 +260,7 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         dType = DRAW_TYPE::FOCUS;
     //
-    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
     {
         switch (cType)
         {
@@ -684,7 +684,7 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     //
     qtree = CreateTreeByMBR(minx, maxx, miny, maxy, showDepth);
     int leafPointNum = 0;
-    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
+//    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
     // 绑定VAO VBO
     glBindVertexArray(VAO);
@@ -693,15 +693,37 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     glEnableVertexAttribArray(0);
     
     // 绘制节点
-    ourShader.setVec4("inColor", glm::vec4(0.15f , 0.8f, 0.5f, 1.0f));
-    glBufferData(GL_ARRAY_BUFFER, leafPointNum * 3 * sizeof(float), pleafNode , GL_STATIC_DRAW);
-    for(int i = 0; i < leafPointNum/4; ++i)
-        glDrawArrays(GL_LINE_LOOP, i*4, 4);
+//    ourShader.setVec4("inColor", glm::vec4(0.15f , 0.8f, 0.5f, 1.0f));
+//    glBufferData(GL_ARRAY_BUFFER, leafPointNum * 3 * sizeof(float), pleafNode , GL_STATIC_DRAW);
+//    for(int i = 0; i < leafPointNum/4; ++i)
+//        glDrawArrays(GL_LINE_LOOP, i*4, 4);
+    
+    // 每个QuadTreeNode节点绘制一次矩形
+    queue<QuadTreeNode*> q;
+    q.push(qtree->GetTreeRoot());
+    while(!q.empty())
+    {
+        QuadTreeNode* node = q.front();
+        q.pop();
+        // 绘制
+        if(node->depth >= showDepth - 1)
+        {
+            ourShader.setVec4("inColor", glm::vec4(0.15f * node->depth, 1.0f - 0.1 * node->depth,cos(node->depth), 1.0f));
+            float* pleafNode = GetArrayByTreeNode(node);
+            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STATIC_DRAW);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            delete []pleafNode;
+        }
+        if(node->child_num == 0)
+            continue;
+        for(int i = 0; i < 4; ++i)
+            q.push(node->child[i]);
+    }
     
     // delete pointer
     delete qtree;
     qtree = NULL;
-    delete [] pleafNode;
+//    delete [] pleafNode;
     //
     glBindVertexArray(0); // no need to unbind it every time
     glBindBuffer(GL_ARRAY_BUFFER, 0);

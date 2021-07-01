@@ -433,15 +433,16 @@ void QuadTree::CreateNodesByMBR(const double minx, const double maxx, const doub
 
 void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, QuadTreeNode* pNode)
 {
+    // 当前pNode的rect 在 MBR 不相交/外部
+    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
+        return;
+    
     bool up = ((pNode->rect.lb_y + pNode->rect.rt_y) >= (miny + maxy));
     // 下半平面 最大深度
     if(!up && pNode->depth >= m_depth)
         return;
     // 上半平面 最大深度-1
     if(up && pNode->depth >= m_depth-1)
-        return;
-    // 当前pNode的rect 在 MBR 不相交/外部
-    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
         return;
     
     
