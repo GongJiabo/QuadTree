@@ -88,14 +88,14 @@ enum CREATE_TYPE
 int main()
 {
     // 查看类对象所占内存大小
-    QuadTreeNode qqnode, qqtree;
-    cout << "SIZE OF QUADTREE: "<< sizeof(qqtree) << endl;
-    cout << "SIZE OF QUADTREENODE: "<< sizeof(qqnode);
+//    QuadTreeNode qqnode, qqtree;
+    cout << "SIZE OF QUADTREE: "<< sizeof(QuadTree) << endl;
+    cout << "SIZE OF QUADTREENODE: "<< sizeof(QuadTreeNode) << endl;
     
     // 设置绘制类型
     dType = DRAW_TYPE::SCREEN;
     // 设置四叉树生成类型
-    cType = CREATE_TYPE::TYPE4;
+    cType = CREATE_TYPE::TYPE1;
     
     // glfw: initialize and configure
     // ------------------------------
@@ -193,6 +193,7 @@ int main()
         int showDepth = static_cast<int>(TREE_DEPTH * 0.4 / l);
         showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
         
+       // cout<<"SHOWDETPH:  " << showDepth << endl;
         
         // 生成四叉树并绘制
         switch (cType)
@@ -661,7 +662,7 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
 //    glm::mat4 inv_proj = glm::inverse(projection);
     glm::mat4 inv_vm = glm::inverse(view * model);
     
-    // 对屏幕四个顶点投影逆变换 确定包围和MBR
+    // 对屏幕四个顶点投影逆变换 确定包围和矩形MBR(Minimum Boundary Rect)
     float vx[4] = {1.0,-1.0,-1.0,1.0};
     float vy[4] = {1.0,1.0,-1.0,-1.0};
     float minx = FLT_MAX, maxx = FLT_MIN, miny = FLT_MAX, maxy = FLT_MIN;
@@ -683,7 +684,7 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     }
     //
     qtree = CreateTreeByMBR(minx, maxx, miny, maxy, showDepth);
-    int leafPointNum = 0;
+//    int leafPointNum = 0;
 //    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
     // 绑定VAO VBO
