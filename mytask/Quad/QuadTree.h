@@ -124,8 +124,8 @@ public:
     void GenerateAllNodes(int curDepth, QuadTreeNode* pNode);
     
     // 根据指定MBR区域(minx, maxx, miny, maxy) 生成区域内的四叉树节点
-    void CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy);
-    void GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, QuadTreeNode* pNode);
+    void CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter);
+    void GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, QuadTreeNode* pNode);
     
     // 根据所查询的位置，返回查询到的该点所属的叶子节点，并生成该叶子节点的下一层(child)
     void GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int dstDepth);
@@ -158,7 +158,7 @@ QuadTree* CreateTreeByRandom();
 QuadTree* CreateTreeAllNodes(int depth);
 
 // 根据PosInfo的范围(屏幕四个顶点)生成四叉树
-QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, int depth);
+QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, int depth);
 
 // 查找四叉树节点，返回搜索路径
 std::vector<PosInfo> SearchPoint(QuadTree* p_tree, int& pos_x, int& pos_y);

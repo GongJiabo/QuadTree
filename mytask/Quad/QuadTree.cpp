@@ -421,23 +421,23 @@ void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<
     GenerateMoreInNode(pos, leaf_node->child[index], vqnode, dstDepth);
 }
 
-void QuadTree::CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy)
+void QuadTree::CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter)
 {
     double lbx = minx < -180.0 ? -180.0 : minx;
     double rtx = maxx > 180.0 ? 180.0 : maxx;
     double lby = miny < -90.0 ? -90.0 : miny;
     double rty = maxy > 90.0 ? 90.0 : maxy;
     //
-    GenerateNodesByMRB(lbx, rtx, lby, rty, m_root);
+    GenerateNodesByMRB(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
 }
 
-void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, QuadTreeNode* pNode)
+void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, QuadTreeNode* pNode)
 {
     // 当前pNode的rect 在 MBR 不相交/外部
     if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
         return;
     
-    bool up = ((pNode->rect.lb_y + pNode->rect.rt_y) >= (miny + maxy));
+    bool up = ((pNode->rect.lb_y + pNode->rect.rt_y) >= (2*ycenter));
     // 下半平面 最大深度
     if(!up && pNode->depth >= m_depth)
         return;
@@ -470,7 +470,7 @@ void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const do
     pNode->child[3] = p_node3;
     pNode->child_num = 4;
     for(int i = 0; i < CHILD_NUM; ++i)
-        GenerateNodesByMRB(minx, maxx, miny, maxy, pNode->child[i]);
+        GenerateNodesByMRB(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i]);
 }
 
 /*----------------------------*/
@@ -503,11 +503,11 @@ QuadTree* CreateTreeAllNodes(int depth)
     return qtree;
 }
 
-QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, int depth)
+QuadTree* CreateTreeByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, int depth)
 {
     QuadTree* qtree = new QuadTree(depth, MAX_OBJECT);
     qtree->InitQuadTreeNode(Rect(LB_X, LB_Y, RT_X, RT_Y));
-    qtree->CreateNodesByMBR(minx, maxx, miny, maxy);
+    qtree->CreateNodesByMBR(minx, maxx, miny, maxy, xcenter, ycenter);
     return qtree;
 }
 

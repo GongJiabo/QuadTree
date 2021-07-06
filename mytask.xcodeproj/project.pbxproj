@@ -11,6 +11,7 @@
 		EA43E5E8268AFA220029A110 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA472682E50C009BEC79 /* CoreVideo.framework */; };
 		EA43E5EA268AFA240029A110 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA492682E518009BEC79 /* IOKit.framework */; };
 		EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
+		EA43E5F126942BE80029A110 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA43E5F026942BE80029A110 /* GLUT.framework */; };
 		EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */; };
 		EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */; };
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
@@ -31,6 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EA43E5F026942BE80029A110 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		EA6AEA362682DC52009BEC79 /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		EA6AEA422682DF8A009BEC79 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		EA6AEA432682E4F6009BEC79 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA43E5F126942BE80029A110 /* GLUT.framework in Frameworks */,
 				EA43E5E5268AFA210029A110 /* Cocoa.framework in Frameworks */,
 				EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */,
 				EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */,
@@ -107,6 +110,7 @@
 		EAD131CE267B79FE00C79A9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA43E5F026942BE80029A110 /* GLUT.framework */,
 				EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */,
 				EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */,
 				EA6AEA492682E518009BEC79 /* IOKit.framework */,

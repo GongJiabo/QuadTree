@@ -1,5 +1,6 @@
 #include "glad.h"
 #include <GLFW/glfw3.h>
+#include <GLUT/GLUT.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -39,6 +40,10 @@ void drawLayers_dynamic(unsigned int& VBO, unsigned int& VAO, int& showDepth,
 // 2.根据MBR生成四叉树 在四叉树内实现 不用对每个像素计算
 // 3.TO DO... 对不同dType绘制
 void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                    glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader);
+// 生成四叉树并绘制方案5:
+// 在方案4的基础上使用glut的库函数gluUnproject计算屏幕像素点坐标对应于世界坐标
+void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
                     glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader);
 
 
@@ -81,9 +86,12 @@ enum CREATE_TYPE
     TYPE1,          // 生成满四叉树 选择绘制底层
     TYPE2,          // 最后一层(底层)动态生成 上层为满四叉树
     TYPE3,          // 根据像素点对应的空间坐标系中map的坐标生成四叉树
-    TYPE4           // 根据包围和MBR生成四叉树
+    TYPE4,          // 根据包围和MBR生成四叉树
+    TYPE5           // gluUnproject
     // ...
 }cType;
+
+
 
 int main()
 {
@@ -95,7 +103,7 @@ int main()
     // 设置绘制类型
     dType = DRAW_TYPE::SCREEN;
     // 设置四叉树生成类型
-    cType = CREATE_TYPE::TYPE1;
+    cType = CREATE_TYPE::TYPE5;
     
     // glfw: initialize and configure
     // ------------------------------
@@ -158,6 +166,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         
+//        glUtil.PrintString({ 0, -1 }, "FPS: %5.2f   ", 1.0f/deltaTime);
+        
         // input
         processInput(window);
 
@@ -168,7 +178,7 @@ int main()
         // create transformations
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();
@@ -216,6 +226,11 @@ int main()
             case CREATE_TYPE::TYPE4:
             {
                 drawLayers_MBR(VBO, VAO, showDepth, projection, view, model, ourShader);
+                break;
+            }
+            case CREATE_TYPE::TYPE5:
+            {
+                drawLayers_MBR2(VBO, VAO, showDepth, projection, view, model, ourShader);
                 break;
             }
         }
@@ -275,8 +290,10 @@ void processInput(GLFWwindow *window)
                 cType = CREATE_TYPE::TYPE4;
                 break;
             case CREATE_TYPE::TYPE4:
-                cType = CREATE_TYPE::TYPE1;
+                cType = CREATE_TYPE::TYPE5;
                 break;
+            case CREATE_TYPE::TYPE5:
+                cType = CREATE_TYPE::TYPE1;
             default:
                 break;
         }
@@ -663,19 +680,26 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     glm::mat4 inv_vm = glm::inverse(view * model);
     
     // 对屏幕四个顶点投影逆变换 确定包围和矩形MBR(Minimum Boundary Rect)
-    float vx[4] = {1.0,-1.0,-1.0,1.0};
-    float vy[4] = {1.0,1.0,-1.0,-1.0};
+    float vx[5] = {1.0,-1.0,-1.0,1.0, 0.0};
+    float vy[5] = {1.0,1.0,-1.0,-1.0, 0.0};
     float minx = FLT_MAX, maxx = FLT_MIN, miny = FLT_MAX, maxy = FLT_MIN;
-    for(int i = 0; i < 4; ++i)
+    float xcenter, ycenter;
+    for(int i = 0; i < 5; ++i)
     {
         float nx = vx[i] * tan(glm::radians(camera.Zoom * 0.5f)) * static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT);
         float ny = vy[i] * tan(glm::radians(camera.Zoom * 0.5f));
-    
-        // 求从相机出发的dir射线与平面的交点  Z=-1没想明白？？？ 可能是因为在NDC中 成图的面可以视为z=-1的平面
+        
+        // 求从相机出发的dir射线与平面的交点  Z=-1 成图的面可以视为z=-1的平面
         glm::vec3 dir = glm::normalize(glm::vec3(nx, ny, -1));
-        float t = glm::dot((glm::vec3(v1.x,v1.y,v1.z)), nor) / glm::dot(dir, nor);
-        glm::vec4 intersectPoint_ViewSpace = glm::vec4(t*dir.x,t*dir.y,t*dir.z,1.0f);
+        float t = glm::dot((glm::vec3(v1.x, v1.y, v1.z)), nor) / glm::dot(dir, nor);
+        glm::vec4 intersectPoint_ViewSpace = glm::vec4(t*dir.x, t*dir.y, t*dir.z,1.0f);
         glm::vec4 intersectPoint = inv_vm * intersectPoint_ViewSpace;
+
+        if(i == 4)
+        {
+            xcenter = intersectPoint.x;
+            ycenter = intersectPoint.y;
+        }
         
         minx = min(minx, intersectPoint.x);
         maxx = max(maxx, intersectPoint.x);
@@ -683,7 +707,121 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
         maxy = max(maxy, intersectPoint.y);
     }
     //
-    qtree = CreateTreeByMBR(minx, maxx, miny, maxy, showDepth);
+    qtree = CreateTreeByMBR(minx, maxx, miny, maxy, xcenter, ycenter, showDepth);
+//    int leafPointNum = 0;
+//    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
+    
+    // 绑定VAO VBO
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    
+    // 每个QuadTreeNode节点绘制一次矩形
+    queue<QuadTreeNode*> q;
+    q.push(qtree->GetTreeRoot());
+    while(!q.empty())
+    {
+        QuadTreeNode* node = q.front();
+        q.pop();
+        // 绘制
+        if(node->depth >= showDepth - 1)
+        {
+            ourShader.setVec4("inColor", glm::vec4(0.15f * node->depth, 1.0f - 0.1 * node->depth,cos(node->depth), 1.0f));
+            float* pleafNode = GetArrayByTreeNode(node);
+            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STATIC_DRAW);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            delete []pleafNode;
+        }
+        if(node->child_num == 0)
+            continue;
+        for(int i = 0; i < 4; ++i)
+            q.push(node->child[i]);
+    }
+    
+    // delete pointer
+    delete qtree;
+    qtree = NULL;
+//    delete [] pleafNode;
+    //
+    glBindVertexArray(0); // no need to unbind it every time
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
+                    glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+{
+    // 变换矩阵转数组
+    double modelview[16], project[16];//模型投影矩阵
+    glm::mat4 mulmv = view * model;
+    for(int i = 0; i < 4; ++i)
+    {
+        modelview[4*i    ] = mulmv[i][0];
+        modelview[4*i + 1] = mulmv[i][1];
+        modelview[4*i + 2] = mulmv[i][2];
+        modelview[4*i + 3] = mulmv[i][3];
+        project[4*i    ] = projection[i][0];
+        project[4*i + 1] = projection[i][1];
+        project[4*i + 2] = projection[i][2];
+        project[4*i + 3] = projection[i][3];
+    }
+    int viewport[4]={0,0,SCR_WIDTH,SCR_HEIGHT};//视口
+    
+//    double objx,objy,objz;//获得的世界坐标值
+//    glGetDoublev( GL_PROJECTION_MATRIX, project );//获得投影矩阵
+//    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );//获得模型矩阵
+//    glGetIntegerv( GL_VIEWPORT, viewport );    //获得视口
+//    glReadPixels( x, viewport[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &ScreenZ ); //获得屏幕像素对应的世界坐标深度值
+//    gluUnProject( SCR_WIDTH, SCR_HEIGHT, 0.0 , modelview, project, viewport, &objx, &objy, &objz );//获得屏幕坐标对应的世界坐标
+    
+    // 确定地图平面的法向量(世界空间坐标系)
+    glm::vec4 v0(LB_X, LB_Y, 0.0f, 1.0f);
+    glm::vec4 v1(LB_X, RT_Y, 0.0f, 1.0f);
+    glm::vec4 v2(RT_X, RT_Y, 0.0f, 1.0f);
+    glm::vec3 nor = glm::normalize(glm::cross(glm::vec3(v1.x-v0.x, v1.y-v0.y, v1.z-v0.z), glm::vec3(v2.x-v0.x, v2.y-v0.y, v2.z-v0.z)));
+
+    
+    // 对屏幕四个顶点投影逆变换 确定包围和矩形MBR(Minimum Boundary Rect)
+    float vx[5] = {1.0, 1.0, 0.0, 0.0, 0.5};
+    float vy[5] = {1.0, 0.0, 1.0, 0.0, 0.5};
+    float minx = FLT_MAX, maxx = FLT_MIN, miny = FLT_MAX, maxy = FLT_MIN;
+    float xcenter = 0, ycenter = 0;
+    for(int i = 0; i < 5; ++i)
+    {
+        // 使用gluUnproject
+        double x0,x1,y0,y1,z0,z1;
+        //获得屏幕坐标对应的世界坐标
+        // vec3(x0,y0,z0) 与 vec3(x1,y1,z1) 与 camera.Postion必然在一条直线上！
+        gluUnProject(vx[i]*SCR_WIDTH, vy[i]*SCR_HEIGHT, 0.0 , modelview, project, viewport, &x0, &y0, &z0);
+        gluUnProject(vx[i]*SCR_WIDTH, vy[i]*SCR_HEIGHT, 1.0, modelview, project, viewport, &x1, &y1, &z1);
+        glm::vec3 dir = glm::normalize(glm::vec3(x1-x0, y1-y0, z1-z0));
+        
+        // 求从相机出发的dir射线与平面的交点  Z=-1 成图的面可以视为z=-1的平面
+        float t = glm::dot((glm::vec3(v1.x - x0, v1.y - y0, v1.z - z0)), nor) / glm::dot(dir, nor);
+        glm::vec4 intersectPoint_wordSpace = glm::vec4(x0 + t*dir.x, y0 + t*dir.y, z0 + t*dir.z, 1.0f);
+        
+        // line0 line1 camera.Position 必然三点共线
+//        glm::vec3 line0 = glm::normalize(glm::vec3(x0-camera.Position.x, y0-camera.Position.y, z0-camera.Position.z));
+//        glm::vec3 line1 = glm::normalize(glm::vec3(x0-x1, y0-y1, z0-z1));
+//        cout << "line0: " << line0.x << "  " << line0.y << "  " << line0.z << endl;
+//        cout << "line1: " << line1.x << "  " << line1.y << "  " << line1.z << endl << endl;
+        
+        // 计算屏幕中心点
+        if(i == 4)
+        {
+            xcenter = intersectPoint_wordSpace.x;
+            ycenter = intersectPoint_wordSpace.y;
+            break;
+        }
+        
+        // min与max应该互为相反数
+        minx = min(minx, intersectPoint_wordSpace.x);
+        maxx = max(maxx, intersectPoint_wordSpace.x);
+        miny = min(miny, intersectPoint_wordSpace.y);
+        maxy = max(maxy, intersectPoint_wordSpace.y);
+    }
+    //
+    qtree = CreateTreeByMBR(minx, maxx, miny, maxy, xcenter, ycenter, showDepth);
 //    int leafPointNum = 0;
 //    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
