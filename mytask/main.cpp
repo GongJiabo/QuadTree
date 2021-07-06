@@ -767,21 +767,14 @@ void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     }
     int viewport[4]={0,0,SCR_WIDTH,SCR_HEIGHT};//视口
     
-//    double objx,objy,objz;//获得的世界坐标值
-//    glGetDoublev( GL_PROJECTION_MATRIX, project );//获得投影矩阵
-//    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );//获得模型矩阵
-//    glGetIntegerv( GL_VIEWPORT, viewport );    //获得视口
-//    glReadPixels( x, viewport[3]-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &ScreenZ ); //获得屏幕像素对应的世界坐标深度值
-//    gluUnProject( SCR_WIDTH, SCR_HEIGHT, 0.0 , modelview, project, viewport, &objx, &objy, &objz );//获得屏幕坐标对应的世界坐标
-    
     // 确定地图平面的法向量(世界空间坐标系)
     glm::vec4 v0(LB_X, LB_Y, 0.0f, 1.0f);
     glm::vec4 v1(LB_X, RT_Y, 0.0f, 1.0f);
     glm::vec4 v2(RT_X, RT_Y, 0.0f, 1.0f);
     glm::vec3 nor = glm::normalize(glm::cross(glm::vec3(v1.x-v0.x, v1.y-v0.y, v1.z-v0.z), glm::vec3(v2.x-v0.x, v2.y-v0.y, v2.z-v0.z)));
 
-    
     // 对屏幕四个顶点投影逆变换 确定包围和矩形MBR(Minimum Boundary Rect)
+    // 注意此时原点为左下角 x轴向右 y轴向上
     float vx[5] = {1.0, 1.0, 0.0, 0.0, 0.5};
     float vy[5] = {1.0, 0.0, 1.0, 0.0, 0.5};
     float minx = FLT_MAX, maxx = FLT_MIN, miny = FLT_MAX, maxy = FLT_MIN;
