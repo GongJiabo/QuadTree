@@ -2,9 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <GLUT/GLUT.h>
 
+// glm
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 
 #include <iostream>
 #include "Quad/QuadTree.h"
@@ -118,7 +120,7 @@ int main()
 
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "QuadTree Map", NULL, NULL);
     
     if (window == NULL)
     {
@@ -178,7 +180,7 @@ int main()
         // create transformations
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();
@@ -234,6 +236,9 @@ int main()
                 break;
             }
         }
+        
+        // 绘制文字
+        
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // 交换缓冲并查询IO事件
@@ -830,7 +835,7 @@ void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
 //    for(int i = 0; i < leafPointNum/4; ++i)
 //        glDrawArrays(GL_LINE_LOOP, i*4, 4);
     
-    // 每个QuadTreeNode节点绘制一次矩形
+    // 每个QuadTreeNode叶子节点绘制一次矩形
     queue<QuadTreeNode*> q;
     q.push(qtree->GetTreeRoot());
     while(!q.empty())

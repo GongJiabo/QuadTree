@@ -313,15 +313,17 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
 					"./**",
 					"$(glfw_header)/**",
 					"$(glew_header)/**",
+					"/usr/local/include/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(glfw_lib)/**",
 					"$(glew_lib)/**",
+					"/usr/local/lib/**",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -334,7 +336,9 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(glfw_lib)/**",
 					"$(glew_lib)/**",
+					"/usr/local/lib/**",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -1,5 +1,6 @@
 dependencies: /Users/jbgong/Desktop/mytask/mytask/main.cpp glad/glad.h \
-  /usr/local/include/KHR/khrplatform.h /usr/local/include/GLFW/glfw3.h \
+  /usr/local/include/KHR/khrplatform.h \
+  /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW/glfw3.h \
   mytask/glm/glm.hpp mytask/glm/detail/_fixes.hpp \
   mytask/glm/detail/setup.hpp mytask/glm/detail/../simd/platform.h \
   mytask/glm/fwd.hpp mytask/glm/detail/qualifier.hpp mytask/glm/vec2.hpp \
@@ -195,5 +196,4 @@ dependencies: /Users/jbgong/Desktop/mytask/mytask/main.cpp glad/glad.h \
   mytask/glm/gtc/../mat3x2.hpp mytask/glm/gtc/../mat3x3.hpp \
   mytask/glm/gtc/../mat3x4.hpp mytask/glm/gtc/../mat4x2.hpp \
   mytask/glm/gtc/../mat4x3.hpp mytask/glm/gtc/type_ptr.inl \
-  mytask/Quad/QuadTree.h mytask/Shader.h mytask/Camera.h \
-  /usr/local/include/glad/glad.h
+  mytask/Quad/QuadTree.h mytask/Shader.h mytask/Camera.h
