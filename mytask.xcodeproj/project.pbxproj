@@ -7,13 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA43E5E5268AFA210029A110 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA452682E4FB009BEC79 /* Cocoa.framework */; };
-		EA43E5E8268AFA220029A110 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA472682E50C009BEC79 /* CoreVideo.framework */; };
-		EA43E5EA268AFA240029A110 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA492682E518009BEC79 /* IOKit.framework */; };
 		EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
 		EA43E5F126942BE80029A110 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA43E5F026942BE80029A110 /* GLUT.framework */; };
 		EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */; };
 		EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */; };
+		EA9FA2422695A5E500E93BB9 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA9FA2412695A5E500E93BB9 /* libfreetype.a */; };
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
 		EAD131CC267B78C500C79A9E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EAD131CB267B78C500C79A9E /* glad.c */; };
 		EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
@@ -36,13 +34,13 @@
 		EA6AEA362682DC52009BEC79 /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		EA6AEA422682DF8A009BEC79 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		EA6AEA432682E4F6009BEC79 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		EA6AEA452682E4FB009BEC79 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		EA6AEA472682E50C009BEC79 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		EA6AEA492682E518009BEC79 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../opt/homebrew/Cellar/glfw/3.3.4/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../opt/homebrew/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
 		EA6AEA5326830742009BEC79 /* shader.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.fs; sourceTree = "<group>"; };
 		EA6AEA5426830742009BEC79 /* shader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = shader.vs; sourceTree = "<group>"; };
+		EA9FA23F2695A58D00E93BB9 /* text.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = text.vs; sourceTree = "<group>"; };
+		EA9FA2402695A58D00E93BB9 /* text.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = text.fs; sourceTree = "<group>"; };
+		EA9FA2412695A5E500E93BB9 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../../opt/homebrew/Cellar/freetype/2.10.4/lib/libfreetype.a; sourceTree = "<group>"; };
 		EAD131C1267B783500C79A9E /* mytask */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mytask; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD131C4267B783500C79A9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EAD131CB267B78C500C79A9E /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
@@ -55,12 +53,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA9FA2422695A5E500E93BB9 /* libfreetype.a in Frameworks */,
 				EA43E5F126942BE80029A110 /* GLUT.framework in Frameworks */,
-				EA43E5E5268AFA210029A110 /* Cocoa.framework in Frameworks */,
 				EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */,
 				EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */,
-				EA43E5E8268AFA220029A110 /* CoreVideo.framework in Frameworks */,
-				EA43E5EA268AFA240029A110 /* IOKit.framework in Frameworks */,
 				EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +67,8 @@
 		EA6AEA52268305F2009BEC79 /* glsl */ = {
 			isa = PBXGroup;
 			children = (
+				EA9FA2402695A58D00E93BB9 /* text.fs */,
+				EA9FA23F2695A58D00E93BB9 /* text.vs */,
 				EA6AEA5326830742009BEC79 /* shader.fs */,
 				EA6AEA5426830742009BEC79 /* shader.vs */,
 			);
@@ -110,12 +108,10 @@
 		EAD131CE267B79FE00C79A9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA9FA2412695A5E500E93BB9 /* libfreetype.a */,
 				EA43E5F026942BE80029A110 /* GLUT.framework */,
 				EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */,
 				EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */,
-				EA6AEA492682E518009BEC79 /* IOKit.framework */,
-				EA6AEA472682E50C009BEC79 /* CoreVideo.framework */,
-				EA6AEA452682E4FB009BEC79 /* Cocoa.framework */,
 				EA6AEA432682E4F6009BEC79 /* OpenGL.framework */,
 			);
 			name = Frameworks;
@@ -317,11 +313,13 @@
 					"$(glfw_header)/**",
 					"$(glew_header)/**",
 					"/usr/local/include/**",
+					"/opt/homebrew/Cellar/freetype/2.10.4/include/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(glfw_lib)/**",
-					"$(glew_lib)/**",
 					"/usr/local/lib/**",
+					"${glfw_lib}",
+					"${glew_lib}",
+					/opt/homebrew/Cellar/freetype/2.10.4/lib,
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -334,9 +332,10 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = (
-					"$(glfw_lib)/**",
-					"$(glew_lib)/**",
 					"/usr/local/lib/**",
+					"${glfw_lib}",
+					"${glew_lib}",
+					/opt/homebrew/Cellar/freetype/2.10.4/lib,
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
