@@ -1,4 +1,4 @@
-dependencies: /Users/jbgong/Desktop/mytask/mytask/main.cpp \
+dependencies: /Users/jbgong/Desktop/mytask/mytask/DrawMethod.cpp \
   mytask/DrawMethod.h mytask/Maplib.h glad/glad.h \
   /usr/local/include/KHR/khrplatform.h \
   /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW/glfw3.h \

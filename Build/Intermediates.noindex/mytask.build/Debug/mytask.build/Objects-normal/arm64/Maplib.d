@@ -1,6 +1,5 @@
-dependencies: /Users/jbgong/Desktop/mytask/mytask/main.cpp \
-  mytask/DrawMethod.h mytask/Maplib.h glad/glad.h \
-  /usr/local/include/KHR/khrplatform.h \
+dependencies: /Users/jbgong/Desktop/mytask/mytask/Maplib.cpp \
+  mytask/Maplib.h glad/glad.h /usr/local/include/KHR/khrplatform.h \
   /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW/glfw3.h \
   mytask/glm/glm.hpp mytask/glm/detail/_fixes.hpp \
   mytask/glm/detail/setup.hpp mytask/glm/detail/../simd/platform.h \

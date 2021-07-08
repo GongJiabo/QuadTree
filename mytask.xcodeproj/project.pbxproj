@@ -15,6 +15,8 @@
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
 		EAD131CC267B78C500C79A9E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EAD131CB267B78C500C79A9E /* glad.c */; };
 		EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
+		EAEA8F092696AA9F00F3FD4E /* DrawMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */; };
+		EAEA8F0D2696ACC500F3FD4E /* Maplib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F0C2696ACC500F3FD4E /* Maplib.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +48,10 @@
 		EAD131CB267B78C500C79A9E /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadTree.cpp; sourceTree = "<group>"; };
 		EAD131DE267B7BBE00C79A9E /* QuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadTree.h; sourceTree = "<group>"; };
+		EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawMethod.cpp; sourceTree = "<group>"; };
+		EAEA8F0A2696AB1500F3FD4E /* DrawMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawMethod.h; sourceTree = "<group>"; };
+		EAEA8F0B2696AB8900F3FD4E /* Maplib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Maplib.h; sourceTree = "<group>"; };
+		EAEA8F0C2696ACC500F3FD4E /* Maplib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Maplib.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +107,10 @@
 				EAD131C4267B783500C79A9E /* main.cpp */,
 				EA6AEA362682DC52009BEC79 /* Shader.h */,
 				EA6AEA422682DF8A009BEC79 /* Camera.h */,
+				EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */,
+				EAEA8F0A2696AB1500F3FD4E /* DrawMethod.h */,
+				EAEA8F0B2696AB8900F3FD4E /* Maplib.h */,
+				EAEA8F0C2696ACC500F3FD4E /* Maplib.cpp */,
 			);
 			path = mytask;
 			sourceTree = "<group>";
@@ -185,7 +195,9 @@
 			files = (
 				EAD131C5267B783500C79A9E /* main.cpp in Sources */,
 				EAD131CC267B78C500C79A9E /* glad.c in Sources */,
+				EAEA8F092696AA9F00F3FD4E /* DrawMethod.cpp in Sources */,
 				EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */,
+				EAEA8F0D2696ACC500F3FD4E /* Maplib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
