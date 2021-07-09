@@ -8,7 +8,7 @@
 #ifndef maplib_h
 #define maplib_h
 
-#include "glad.h"
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <GLUT/GLUT.h>
 
@@ -21,10 +21,9 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <iostream>
 #include <map>
-#include "Quad/QuadTree.h"
 
+#include "Quad/QuadTree.h"
 #include "Shader.h"
 #include "Camera.h"
 

@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA325E8D26980A4900025E4D /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
+		EA325E8E26980A4900025E4D /* DrawMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */; };
+		EA325E8F26980A4900025E4D /* Maplib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F0C2696ACC500F3FD4E /* Maplib.cpp */; };
+		EA325E9526980F1800025E4D /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EA325E9326980F1800025E4D /* glad.c */; };
 		EA43E5EE268AFA280029A110 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA432682E4F6009BEC79 /* OpenGL.framework */; };
 		EA43E5F126942BE80029A110 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA43E5F026942BE80029A110 /* GLUT.framework */; };
 		EA6AEA4E2682E57D009BEC79 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */; };
 		EA6AEA502682E58B009BEC79 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */; };
 		EA9FA2422695A5E500E93BB9 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA9FA2412695A5E500E93BB9 /* libfreetype.a */; };
 		EAD131C5267B783500C79A9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131C4267B783500C79A9E /* main.cpp */; };
-		EAD131CC267B78C500C79A9E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = EAD131CB267B78C500C79A9E /* glad.c */; };
-		EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */; };
-		EAEA8F092696AA9F00F3FD4E /* DrawMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */; };
-		EAEA8F0D2696ACC500F3FD4E /* Maplib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAEA8F0C2696ACC500F3FD4E /* Maplib.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +32,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EA325E9326980F1800025E4D /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		EA325E9426980F1800025E4D /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
 		EA43E5F026942BE80029A110 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		EA6AEA362682DC52009BEC79 /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		EA6AEA422682DF8A009BEC79 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
@@ -45,7 +47,6 @@
 		EA9FA2412695A5E500E93BB9 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../../opt/homebrew/Cellar/freetype/2.10.4/lib/libfreetype.a; sourceTree = "<group>"; };
 		EAD131C1267B783500C79A9E /* mytask */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mytask; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAD131C4267B783500C79A9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		EAD131CB267B78C500C79A9E /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		EAD131DD267B7BBE00C79A9E /* QuadTree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuadTree.cpp; sourceTree = "<group>"; };
 		EAD131DE267B7BBE00C79A9E /* QuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuadTree.h; sourceTree = "<group>"; };
 		EAEA8F072696AA9F00F3FD4E /* DrawMethod.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawMethod.cpp; sourceTree = "<group>"; };
@@ -70,6 +71,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA325E9226980F0100025E4D /* glad */ = {
+			isa = PBXGroup;
+			children = (
+				EA325E9326980F1800025E4D /* glad.c */,
+				EA325E9426980F1800025E4D /* glad.h */,
+			);
+			path = glad;
+			sourceTree = "<group>";
+		};
 		EA6AEA52268305F2009BEC79 /* glsl */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,9 +111,9 @@
 		EAD131C3267B783500C79A9E /* mytask */ = {
 			isa = PBXGroup;
 			children = (
+				EA325E9226980F0100025E4D /* glad */,
 				EA6AEA52268305F2009BEC79 /* glsl */,
 				EAD131DC267B7BA500C79A9E /* Quad */,
-				EAD131CB267B78C500C79A9E /* glad.c */,
 				EAD131C4267B783500C79A9E /* main.cpp */,
 				EA6AEA362682DC52009BEC79 /* Shader.h */,
 				EA6AEA422682DF8A009BEC79 /* Camera.h */,
@@ -119,10 +129,10 @@
 			isa = PBXGroup;
 			children = (
 				EA9FA2412695A5E500E93BB9 /* libfreetype.a */,
-				EA43E5F026942BE80029A110 /* GLUT.framework */,
 				EA6AEA4F2682E58B009BEC79 /* libGLEW.2.2.0.dylib */,
 				EA6AEA4D2682E57D009BEC79 /* libglfw.3.3.dylib */,
 				EA6AEA432682E4F6009BEC79 /* OpenGL.framework */,
+				EA43E5F026942BE80029A110 /* GLUT.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -193,11 +203,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA325E9526980F1800025E4D /* glad.c in Sources */,
+				EA325E8D26980A4900025E4D /* QuadTree.cpp in Sources */,
+				EA325E8E26980A4900025E4D /* DrawMethod.cpp in Sources */,
+				EA325E8F26980A4900025E4D /* Maplib.cpp in Sources */,
 				EAD131C5267B783500C79A9E /* main.cpp in Sources */,
-				EAD131CC267B78C500C79A9E /* glad.c in Sources */,
-				EAEA8F092696AA9F00F3FD4E /* DrawMethod.cpp in Sources */,
-				EAD131DF267B7BBE00C79A9E /* QuadTree.cpp in Sources */,
-				EAEA8F0D2696ACC500F3FD4E /* Maplib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,14 +328,21 @@
 		EAD131C9267B783500C79A9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
-					"./**",
 					"$(glfw_header)/**",
+					"${glm_header}",
 					"$(glew_header)/**",
-					"/usr/local/include/**",
-					"/opt/homebrew/Cellar/freetype/2.10.4/include/**",
+					/usr/local/include,
+					"${freetype_header}",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"/usr/local/lib/**",
@@ -335,14 +352,22 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Debug;
 		};
 		EAD131CA267B783500C79A9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"/usr/local/lib/**",
 					"${glfw_lib}",
@@ -351,6 +376,8 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = YES;
 			};
 			name = Release;
 		};

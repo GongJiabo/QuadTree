@@ -7,9 +7,9 @@
 #include <fstream>
 #include <vector>
 #include <queue>
+#include <string>
 
 using namespace std;
-
 
 const int RAND_NUM = 500;
 const int MAX_OBJECT = 1;

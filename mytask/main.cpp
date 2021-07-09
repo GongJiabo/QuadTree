@@ -5,7 +5,7 @@
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);          // 回调函数，监听鼠标移动事件
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset);  // 回调函数，监听鼠标滚轮事件
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);     // 回调函数，监听键盘事件，用来更换方法
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);              // 会滴哦啊函数，窗口变换
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);              // 回调函数，窗口变换
 void processInput(GLFWwindow *window);                                      // 处理键盘事件，根据键盘按键变化位置
 void printCameraInfo();
 
