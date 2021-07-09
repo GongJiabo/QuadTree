@@ -67,9 +67,6 @@ int main()
     // build and compile our shader program
     Shader ourShader("/Users/jbgong/Desktop/mytask/mytask/glsl/shader.vs", "/Users/jbgong/Desktop/mytask/mytask/glsl/shader.fs");
     Shader textShader("/Users/jbgong/Desktop/mytask/mytask/glsl/text.vs", "/Users/jbgong/Desktop/mytask/mytask/glsl/text.fs");
-    glm::mat4 tprojection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
-    textShader.use();
-    glUniformMatrix4fv(glGetUniformLocation(textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(tprojection));
 
     // FreeType
     // --------
@@ -147,7 +144,6 @@ int main()
     FT_Done_FreeType(ft);
     
     
-    
     // ------------------------------------
     // 设置顶点缓冲对象VBO与顶点数组对象VAO的ID
     glGenVertexArrays(1, &VAO);
@@ -214,31 +210,32 @@ int main()
        // cout<<"SHOWDETPH:  " << showDepth << endl;
         
         // 生成四叉树并绘制
+        DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
         switch (cType)
         {
             case CREATE_TYPE::TYPE1:
             {
-                drawTwoLayer(VBO, VAO, showDepth, projection, view, model, ourShader);
+                draw.drawTwoLayer(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE2:
             {
-                drawTwoLater_dynLast(VBO, VAO, showDepth, projection, view, model, ourShader);
+                draw.drawTwoLater_dynLast(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE3:
             {
-                drawLayers_dynamic(VBO, VAO, showDepth, projection, view, model, ourShader);
+                draw.drawLayers_dynamic(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE4:
             {
-                drawLayers_MBR(VBO, VAO, showDepth, projection, view, model, ourShader);
+                draw.drawLayers_MBR(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE5:
             {
-                drawLayers_MBR2(VBO, VAO, showDepth, projection, view, model, ourShader);
+                draw.drawLayers_MBR2(ourShader);
                 break;
             }
             default:

@@ -25,8 +25,8 @@ float lastX =  SCR_WIDTH / 2.0;
 float lastY =  SCR_HEIGHT / 2.0;
 float fov   =  40.0f;
 
-// QuadTree
-QuadTree* qtree = NULL;
+//// QuadTree
+//QuadTree* qtree = NULL;
 
 // Draw type
 DRAW_TYPE dType = DRAW_TYPE::SCREEN;
@@ -49,6 +49,10 @@ void RenderText(Shader &shader, std::string text, float x, float y, float scale,
     // activate corresponding render state
     shader.use();
     glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
+    
+    glm::mat4 tprojection = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT));
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(tprojection));
+    
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 

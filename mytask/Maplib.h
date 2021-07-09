@@ -51,8 +51,8 @@ extern float lastX;
 extern float lastY;
 extern float fov;
 
-// QuadTree
-extern QuadTree* qtree;
+//// QuadTree
+//extern QuadTree* qtree;
 
 // Draw type
 enum DRAW_TYPE

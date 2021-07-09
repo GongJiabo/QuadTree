@@ -7,8 +7,58 @@
 
 #include "DrawMethod.h"
 
-void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+
+DrawMethod::DrawMethod():VBO(0),VAO(0),showDepth(0),projection(0),view(0),model(0),qtree(NULL)
+{
+}
+
+DrawMethod::DrawMethod(unsigned int VBO, unsigned int VAO, int showDepth,
+           glm::mat4 projection, glm::mat4 view, glm::mat4 model)
+{
+    this->VBO = VBO;
+    this->VAO = VAO;
+    this->showDepth = showDepth;
+    this->projection = projection;
+    this->view = view;
+    this->model = model;
+}
+
+DrawMethod::~DrawMethod()
+{
+//    std::cout<<"~DrawMethod --- delete qtree" << std::endl;
+    delete qtree;
+    qtree = NULL;
+}
+
+void DrawMethod::setDepth(int depth)
+{
+    this->showDepth = depth;
+}
+
+void DrawMethod::setMatrix(glm::mat4 projection, glm::mat4 view, glm::mat4 model)
+{
+    this->projection = projection;
+    this->view = view;
+    this->model = model;
+}
+
+void DrawMethod::glBind()
+{
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+}
+
+void DrawMethod::glUnbind()
+{
+    glBindVertexArray(0); // no need to unbind it every time
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+// 引用传参 减少内存约6m
+// 生成四叉树并绘制方案1:
+// 生成满四叉树，根据节点评价部分现实子tile
+void DrawMethod::drawTwoLayer(Shader& ourShader)
 {
     // Generate quadtree
 //    qtree = CreateTreeByRandom();
@@ -23,8 +73,7 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     // std::cout << "Father's Tile Depth: " << showDepth <<"   Son's Tile Depth: " << showDepth + 1 << std::endl;
     
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBind();
     
     // 绘制两层
     for(int renderDepth = showDepth, times = 0; times < 2; ++times, ++renderDepth)
@@ -80,9 +129,7 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
             }
         }
     }
-    // delete pointer
-    delete qtree;
-    qtree = NULL;
+    //
     for(auto& p:vv)
     {
         delete []p;
@@ -91,15 +138,14 @@ void drawTwoLayer(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     // 释放vector内存
     vector<float*>().swap(vv);
     //
-    glBindVertexArray(0); // no need to unbind it every time
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUnbind();
     //
 }
 
-void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+// 生成四叉树并绘制方案2:
+// 生成倒数二层为满的四叉树，最后一层根据节点评价生成tile
+void DrawMethod::drawTwoLater_dynLast(Shader& ourShader)
 {
-//    showDepth -= 1;
     // Generate quadtree
 //    qtree = CreateTreeByRandom();
     qtree = CreateTreeAllNodes(showDepth);
@@ -107,8 +153,7 @@ void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     int leafPointNum = 0;
     float* ptrLeaf = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
 
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBind();
     //
     
     glBufferData(GL_ARRAY_BUFFER, leafPointNum * 3 * sizeof(float), ptrLeaf, GL_STATIC_DRAW);
@@ -205,24 +250,20 @@ void drawTwoLater_dynLast(unsigned int& VBO, unsigned int& VAO, int& showDepth,
             break;
         }
     }
-    
-    // delete pointer
-    delete qtree;
-    qtree = NULL;
+    //
     delete ptrLeaf;
     ptrLeaf = NULL;
 
-    glBindVertexArray(0); // no need to unbind it every time
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUnbind();
 }
 
-void drawLayers_dynamic(unsigned int& VBO, unsigned int& VAO, int& showDepth,
-                  glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+// 生成四叉树并绘制方案3:
+// 1.根据屏幕范围生成底图节点
+// 2.根据感兴趣的范围（上下屏幕/相机位置/视点）生成子四叉树
+void DrawMethod::drawLayers_dynamic(Shader& ourShader)
 {
-//    std::cout << "Current Depth: " << showDepth     << std::endl;
     // 绑定VAO VBO
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBind();
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
@@ -318,16 +359,16 @@ void drawLayers_dynamic(unsigned int& VBO, unsigned int& VAO, int& showDepth,
             vector<QuadTreeNode*>().swap(vqnode);
         }
     }
-    // delete pointer
-    delete qtree;
-    qtree = NULL;
-
-    glBindVertexArray(0); // no need to unbind it every time
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //
+    glUnbind();
 }
 
-void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
-                    glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+
+// 生成四叉树并绘制方案4:
+// 1.根据屏幕四个顶点确定在地图底图的包围和矩形MBR
+// 2.根据MBR生成四叉树 在四叉树内实现 不用对每个像素计算
+// 3.TO DO... 对不同dType绘制
+void DrawMethod::drawLayers_MBR(Shader& ourShader)
 {
     // 确定地图平面的法向量
     glm::vec4 v0(LB_X, LB_Y, 0.0f, 1.0f);
@@ -371,12 +412,9 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     }
     //
     qtree = CreateTreeByMBR(minx, maxx, miny, maxy, xcenter, ycenter, showDepth);
-//    int leafPointNum = 0;
-//    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
     // 绑定VAO VBO
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBind();
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
@@ -401,18 +439,14 @@ void drawLayers_MBR(unsigned int& VBO, unsigned int& VAO, int& showDepth,
         for(int i = 0; i < 4; ++i)
             q.push(node->child[i]);
     }
-    
-    // delete pointer
-    delete qtree;
-    qtree = NULL;
-//    delete [] pleafNode;
     //
-    glBindVertexArray(0); // no need to unbind it every time
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUnbind();
 }
 
-void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
-                    glm::mat4& projection, glm::mat4& view, glm::mat4& model, Shader& ourShader)
+
+// 生成四叉树并绘制方案5:
+// 在方案4的基础上使用glut的库函数gluUnproject计算屏幕像素点坐标对应于世界坐标
+void DrawMethod::drawLayers_MBR2(Shader& ourShader)
 {
     // 变换矩阵转数组
     double modelview[16], project[16];//模型投影矩阵
@@ -478,20 +512,11 @@ void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
     }
     //
     qtree = CreateTreeByMBR(minx, maxx, miny, maxy, xcenter, ycenter, showDepth);
-//    int leafPointNum = 0;
-//    float* pleafNode = GetVertex_LeafNode(leafPointNum, qtree->GetTreeRoot());
     
     // 绑定VAO VBO
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBind();
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    
-    // 绘制节点
-//    ourShader.setVec4("inColor", glm::vec4(0.15f , 0.8f, 0.5f, 1.0f));
-//    glBufferData(GL_ARRAY_BUFFER, leafPointNum * 3 * sizeof(float), pleafNode , GL_STATIC_DRAW);
-//    for(int i = 0; i < leafPointNum/4; ++i)
-//        glDrawArrays(GL_LINE_LOOP, i*4, 4);
     
     // 每个QuadTreeNode叶子节点绘制一次矩形
     queue<QuadTreeNode*> q;
@@ -514,12 +539,5 @@ void drawLayers_MBR2(unsigned int& VBO, unsigned int& VAO, int& showDepth,
         for(int i = 0; i < 4; ++i)
             q.push(node->child[i]);
     }
-    
-    // delete pointer
-    delete qtree;
-    qtree = NULL;
-//    delete [] pleafNode;
-    //
-    glBindVertexArray(0); // no need to unbind it every time
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUnbind();
 }

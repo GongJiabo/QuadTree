@@ -1,9 +1,5 @@
 dependencies: /Users/jbgong/Desktop/mytask/mytask/DrawMethod.cpp \
   /Users/jbgong/Desktop/mytask/mytask/DrawMethod.h \
-  /Users/jbgong/Desktop/mytask/mytask/Maplib.h \
-  /Users/jbgong/Desktop/mytask/mytask/glad/glad.h \
-  /usr/local/include/KHR/khrplatform.h \
-  /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW/glfw3.h \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/glm.hpp \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/detail/_fixes.hpp \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/detail/setup.hpp \
@@ -252,6 +248,11 @@ dependencies: /Users/jbgong/Desktop/mytask/mytask/DrawMethod.cpp \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/gtc/../mat4x2.hpp \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/gtc/../mat4x3.hpp \
   /opt/homebrew/Cellar/glm/0.9.9.8/include/glm/gtc/type_ptr.inl \
+  /Users/jbgong/Desktop/mytask/mytask/Shader.h \
+  /Users/jbgong/Desktop/mytask/mytask/glad/glad.h \
+  /usr/local/include/KHR/khrplatform.h \
+  /Users/jbgong/Desktop/mytask/mytask/Maplib.h \
+  /opt/homebrew/Cellar/glfw/3.3.4/include/GLFW/glfw3.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/ft2build.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/config/ftheader.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/freetype.h \
@@ -268,6 +269,5 @@ dependencies: /Users/jbgong/Desktop/mytask/mytask/DrawMethod.cpp \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/ftmoderr.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/fterrdef.h \
   /Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.h \
-  /Users/jbgong/Desktop/mytask/mytask/Shader.h \
   /Users/jbgong/Desktop/mytask/mytask/Camera.h \
   /usr/local/include/glad/glad.h
