@@ -161,7 +161,7 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
         string str_fps = "FPS: " + to_string(static_cast<int>(1/deltaTime));
-        string str_type = "TYPE OF CREATED TREE: " + to_string(cType+1);
+        string str_type = "TYPE OF METHOD: " + to_string(cType+1);
         
         // input
         processInput(window);
