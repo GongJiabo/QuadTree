@@ -143,6 +143,9 @@ int main()
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
     
+    // QuadTree
+    DrawMethod_OneTree drawOneTree;
+    drawOneTree.initQuadTree(TREE_DEPTH, MAX_OBJECT, Rect(LB_X, LB_Y, RT_X, RT_Y));
     
     // ------------------------------------
     // 设置顶点缓冲对象VBO与顶点数组对象VAO的ID
@@ -152,6 +155,13 @@ int main()
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        
+        // 节点评价
+        // 设置需要显示的depth阈值，父tile深度
+        float l = abs(camera.Position[2]);
+        int showDepth = static_cast<int>(TREE_DEPTH * 0.4 / l);
+        showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
+        
         // per-frame time logic
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -176,12 +186,13 @@ int main()
         glBindVertexArray(0);
         RenderText(textShader, str_fps, 10.0f, 10.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
         RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+        RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
         
-
+        
         // create transformations
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();
@@ -200,43 +211,47 @@ int main()
         ourShader.setMat4("view", view);
         ourShader.setMat4("model", model);
         
-        // 节点评价
-        // 设置需要显示的depth阈值，父tile深度
-        float l = abs(camera.Position[2]);
-        int showDepth = static_cast<int>(TREE_DEPTH * 0.4 / l);
-        showDepth = showDepth > TREE_DEPTH ? TREE_DEPTH : showDepth;
-        
         // 查看当前所需的四叉树深度
-       // cout<<"SHOWDETPH:  " << showDepth << endl;
+//        cout<<"SHOWDETPH:  " << showDepth << endl;
         
-        // 生成四叉树并绘制
-        DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
         switch (cType)
         {
             case CREATE_TYPE::TYPE1:
             {
+                DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
                 draw.drawTwoLayer(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE2:
             {
+                DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
                 draw.drawTwoLater_dynLast(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE3:
             {
+                DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
                 draw.drawLayers_dynamic(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE4:
             {
+                DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
                 draw.drawLayers_MBR(ourShader);
                 break;
             }
             case CREATE_TYPE::TYPE5:
             {
+                DrawMethod draw(VBO, VAO, showDepth, projection, view, model);
                 draw.drawLayers_MBR2(ourShader);
                 break;
+            }
+            case CREATE_TYPE::TYPE6:
+            {
+                drawOneTree.setGlObj(VBO, VAO);
+                drawOneTree.setDepth(showDepth);
+                drawOneTree.setMatrix(projection, view, model);
+                drawOneTree.drawLayers_MBR(ourShader);
             }
             default:
                 break;
@@ -305,7 +320,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
                 cType = CREATE_TYPE::TYPE5;
                 break;
             case CREATE_TYPE::TYPE5:
+                cType = CREATE_TYPE::TYPE6;
+                break;
+            case CREATE_TYPE::TYPE6:
                 cType = CREATE_TYPE::TYPE1;
+                break;
             default:
                 break;
         }

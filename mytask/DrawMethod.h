@@ -17,9 +17,11 @@
 // para
 #include "Maplib.h"
 
+// 每一帧都创建一个DrawMethod对象
+// 即每一帧都创建一个QuadTree指针对象并在结束的时候删除
 class DrawMethod
 {
-private:
+protected:
     unsigned int VBO;
     unsigned int VAO;
     int showDepth;
@@ -34,9 +36,12 @@ public:
                glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     ~DrawMethod();
     
+    void initQuadTree(const int& depth, const int& maxobj, Rect ret);
+    
     void setDepth(int depth);
     void setMatrix(glm::mat4 projection, glm::mat4 view, glm::mat4 model);
     
+    void setGlObj(unsigned int VBO, unsigned int VAO) {this->VBO = VBO; this->VAO = VAO;}
     void glBind();
     void glUnbind();
     
@@ -64,4 +69,29 @@ public:
     void drawLayers_MBR2(Shader& ourShader);
 };
 
+
+// 仅创建一个DrawMethod_OneTree对象
+// 即每一帧都对同一个QuadTree指针进行操作
+// 每一帧都要对不需要显示的QuadTreeNode节点进行删除 同时生成新的
+class DrawMethod_OneTree : public DrawMethod
+{
+private:
+    Rect preMbr;        // 上一帧屏幕范围对应的包围和
+    Rect curMbr;        // 当前帧屏幕范围对应的包围和
+    int preDepth;       // 上一帧需要显示的四叉树深度
+    int curDepth;       // 当前帧需要显示的四叉树深度
+public:
+    DrawMethod_OneTree();
+    DrawMethod_OneTree(unsigned int VBO, unsigned int VAO, int showDepth,
+                       glm::mat4 projection, glm::mat4 view, glm::mat4 model, Rect preMbr, Rect curMbr, int preDepth, int curDepth);
+    ~DrawMethod_OneTree();
+    
+    // function memebers
+    void SetPreDepth(int& preDepth);
+    void SetCurDepth(int& curDepth);
+    void SetPreMbr(Rect& preMbr);
+    void SetCurMbr(Rect& curMbr);
+    
+    void drawLayers_MBR(Shader& ourShader);
+};
 #endif /* DrawMethod_hpp */

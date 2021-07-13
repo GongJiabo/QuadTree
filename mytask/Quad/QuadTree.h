@@ -48,6 +48,8 @@ struct Rect
     double lb_y;
     double rt_x;
     double rt_y;
+    
+    friend bool isIntersect(const Rect& ret, const Rect& mbr);
 };
 
 struct PosInfo
@@ -83,6 +85,7 @@ struct QuadTreeNode
     std::vector<PosInfo> pos_array;
     int            child_num;               // 当前区域包含的点位信息
     QuadTreeNode *child[CHILD_NUM];         // 子区域
+    QuadTreeNode *father;                   // 父节点
     int            depth;                   // 深度
     unsigned int number;                    // 索引
 };
@@ -111,21 +114,29 @@ public:
     void SetMdepth(const int d);
 	void InitQuadTree(int depth, int max_objects);
 	void InitQuadTreeNode(Rect rect);
-	void CreateQuadTreeNode(int depth, Rect rect, QuadTreeNode *p_node);
+	void CreateQuadTreeNode(QuadTreeNode* fatherNode, int depth, Rect rect, QuadTreeNode *p_node);
 	void Split(QuadTreeNode *p_node);
 	void Insert(PosInfo pos, QuadTreeNode *p_node);
 	int  GetIndex(PosInfo pos, QuadTreeNode *p_node);
 	void Remove(PosInfo pos, QuadTreeNode *p_node);
 	void Find(PosInfo pos, QuadTreeNode *p_start, QuadTreeNode *&p_target);
+    
 	void PrintAllQuadTreeLeafNode(QuadTreeNode *p_node);
+    void DeleteQuadTreeNode(QuadTreeNode *&p_node);
+    void DeleteQuadTreeNodeChild(QuadTreeNode *&p_node);
     
     // 生成四叉树所有的子节点(满四叉树 深度为m_depth)
     void CreateAllNodes();
     void GenerateAllNodes(int curDepth, QuadTreeNode* pNode);
     
-    // 根据指定MBR区域(minx, maxx, miny, maxy) 生成区域内的四叉树节点
-    void CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter);
-    void GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, QuadTreeNode* pNode);
+    // 根据指定MBR区域(minx, maxx, miny, maxy) 生成 区域内的四叉树节点
+    void CreateNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter);
+    void CreateNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode* pNode);
+    
+    // 根据指定MBR区域(minx, maxx, miny, maxy) 调整 区域的四叉树节点(始终操作一个根节点)
+    void MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter);
+    void MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode);
+    
     
     // 根据所查询的位置，返回查询到的该点所属的叶子节点，并生成该叶子节点的下一层(child)
     void GenerateMoreByPoint(PosInfo pos, vector<QuadTreeNode*>& vqnode, const int dstDepth);
@@ -142,6 +153,7 @@ public:
 
 	QuadTreeNode* GetTreeRoot() { return m_root; }
 	int			  GetDepth() { return m_depth; }
+    void          SetDepth(const int& depth) {m_depth = depth;}
 	int			  GetMaxObjects() { return m_maxobjects; }
     
 private:

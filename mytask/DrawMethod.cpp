@@ -30,9 +30,16 @@ DrawMethod::~DrawMethod()
     qtree = NULL;
 }
 
+void DrawMethod::initQuadTree(const int& depth, const int& maxobj, Rect ret)
+{
+    qtree = new QuadTree(depth, maxobj);
+    qtree->InitQuadTreeNode(ret);
+}
+
 void DrawMethod::setDepth(int depth)
 {
-    this->showDepth = depth;
+    showDepth = depth;
+    qtree->SetDepth(depth);
 }
 
 void DrawMethod::setMatrix(glm::mat4 projection, glm::mat4 view, glm::mat4 model)
@@ -68,9 +75,6 @@ void DrawMethod::drawTwoLayer(Shader& ourShader)
     vector<int> numberOfPoints;                             // 每一层的顶点个数
     allDepth = qtree->GetDepth();
     vector<float*> vv = GetVertex_BFS(allPoints, qtree, numberOfPoints);
-    
-    // 输出当前绘制的四叉树层
-    // std::cout << "Father's Tile Depth: " << showDepth <<"   Son's Tile Depth: " << showDepth + 1 << std::endl;
     
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBind();
@@ -229,7 +233,6 @@ void DrawMethod::drawTwoLater_dynLast(Shader& ourShader)
             
             // 如此判断并不科学, 可能所有的中心点夹角均不满足条件
             // 应该寻找夹角最小的中心点
-            // TO DO ...
             if(angle < cos(glm::radians(3.0f)))
                 continue;
             //
@@ -284,7 +287,7 @@ void DrawMethod::drawLayers_dynamic(Shader& ourShader)
     glm::mat4 inv_vm = glm::inverse(view * model);
     
     // 对所有像素点进行遍历 暂时将窗口长宽(像素点坐标范围)定死
-    // TO DO... 当层数深厚了 采样间隔过大会显示不连续
+    // 当层数深厚了 采样间隔过大会显示不连续
     for(int x = 0; x < SCR_WIDTH; x += 20)
     {
         for(int y = 0; y < SCR_HEIGHT; y += 20)
@@ -538,6 +541,139 @@ void DrawMethod::drawLayers_MBR2(Shader& ourShader)
             continue;
         for(int i = 0; i < 4; ++i)
             q.push(node->child[i]);
+    }
+    glUnbind();
+}
+
+
+// DrawMethod_OneTree
+DrawMethod_OneTree::DrawMethod_OneTree():DrawMethod(),preMbr(Rect()),curMbr(Rect()),preDepth(0),curDepth(0)
+{
+    
+}
+
+DrawMethod_OneTree::DrawMethod_OneTree(unsigned int VBO, unsigned int VAO, int showDepth,
+                   glm::mat4 projection, glm::mat4 view, glm::mat4 model, Rect preMbr, Rect curMbr, int preDepth, int curDepth)
+:DrawMethod(VBO, VAO, showDepth, projection, view, model), preMbr(preMbr), curMbr(curMbr), preDepth(preDepth), curDepth(curDepth)
+{
+    
+}
+
+DrawMethod_OneTree::~DrawMethod_OneTree()
+{
+    
+}
+
+void DrawMethod_OneTree::SetPreDepth(int& preDepth)
+{
+    this->preDepth = preDepth;
+}
+void DrawMethod_OneTree::SetCurDepth(int& curDepth)
+{
+    this->curDepth = curDepth;
+}
+
+void DrawMethod_OneTree::SetPreMbr(Rect &preMbr)
+{
+    this->preMbr = preMbr;
+}
+
+void DrawMethod_OneTree::SetCurMbr(Rect &curMbr)
+{
+    this->curMbr = curMbr;
+}
+
+
+void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
+{
+    // 变换矩阵转数组
+    double modelview[16], project[16];//模型投影矩阵
+    glm::mat4 mulmv = view * model;
+    for(int i = 0; i < 4; ++i)
+    {
+        modelview[4*i    ] = mulmv[i][0];
+        modelview[4*i + 1] = mulmv[i][1];
+        modelview[4*i + 2] = mulmv[i][2];
+        modelview[4*i + 3] = mulmv[i][3];
+        project[4*i    ] = projection[i][0];
+        project[4*i + 1] = projection[i][1];
+        project[4*i + 2] = projection[i][2];
+        project[4*i + 3] = projection[i][3];
+    }
+    int viewport[4]={0,0,SCR_WIDTH,SCR_HEIGHT};//视口
+    
+    // 确定地图平面的法向量(世界空间坐标系)
+    glm::vec4 v0(LB_X, LB_Y, 0.0f, 1.0f);
+    glm::vec4 v1(LB_X, RT_Y, 0.0f, 1.0f);
+    glm::vec4 v2(RT_X, RT_Y, 0.0f, 1.0f);
+    glm::vec3 nor = glm::normalize(glm::cross(glm::vec3(v1.x-v0.x, v1.y-v0.y, v1.z-v0.z), glm::vec3(v2.x-v0.x, v2.y-v0.y, v2.z-v0.z)));
+
+    // 对屏幕四个顶点投影逆变换 确定包围和矩形MBR(Minimum Boundary Rect)
+    // 注意此时原点为左下角 x轴向右 y轴向上
+    float vx[5] = {1.0, 1.0, 0.0, 0.0, 0.5};
+    float vy[5] = {1.0, 0.0, 1.0, 0.0, 0.5};
+    float minx = FLT_MAX, maxx = FLT_MIN, miny = FLT_MAX, maxy = FLT_MIN;
+    float xcenter = 0, ycenter = 0;
+    for(int i = 0; i < 5; ++i)
+    {
+        // 使用gluUnproject
+        double x0,x1,y0,y1,z0,z1;
+        //获得屏幕坐标对应的世界坐标
+        // vec3(x0,y0,z0) 与 vec3(x1,y1,z1) 与 camera.Postion必然在一条直线上！
+        gluUnProject(vx[i]*SCR_WIDTH, vy[i]*SCR_HEIGHT, 0.0 , modelview, project, viewport, &x0, &y0, &z0);
+        gluUnProject(vx[i]*SCR_WIDTH, vy[i]*SCR_HEIGHT, 1.0, modelview, project, viewport, &x1, &y1, &z1);
+        glm::vec3 dir = glm::normalize(glm::vec3(x1-x0, y1-y0, z1-z0));
+        
+        // 求从相机出发的dir射线与平面的交点  Z=-1 成图的面可以视为z=-1的平面
+        float t = glm::dot((glm::vec3(v1.x - x0, v1.y - y0, v1.z - z0)), nor) / glm::dot(dir, nor);
+        glm::vec4 intersectPoint_wordSpace = glm::vec4(x0 + t*dir.x, y0 + t*dir.y, z0 + t*dir.z, 1.0f);
+    
+        // 计算屏幕中心点
+        if(i == 4)
+        {
+            xcenter = intersectPoint_wordSpace.x;
+            ycenter = intersectPoint_wordSpace.y;
+            break;
+        }
+        
+        // min与max应该互为相反数
+        minx = min(minx, intersectPoint_wordSpace.x);
+        maxx = max(maxx, intersectPoint_wordSpace.x);
+        miny = min(miny, intersectPoint_wordSpace.y);
+        maxy = max(maxy, intersectPoint_wordSpace.y);
+    }
+    //
+//    cout << "minx="<<minx<< "  maxx="<<maxx<<"  miny="<<miny<<"  maxy="<<maxy<<endl;
+    qtree->MaintainNodesByMBR(minx, maxx, miny, maxy, xcenter, ycenter);
+    
+    // 绑定VAO VBO
+    glBind();
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    
+    // 每个QuadTreeNode叶子节点绘制一次矩形
+    queue<QuadTreeNode*> q;
+    q.push(qtree->GetTreeRoot());
+    while(!q.empty())
+    {
+        QuadTreeNode* node = q.front();
+        q.pop();
+        // 绘制
+        if(node->depth >= qtree->GetDepth() - 1)
+        {
+            ourShader.setVec4("inColor", glm::vec4(0.15f * node->depth, 1.0f - 0.1 * node->depth,cos(node->depth), 1.0f));
+            float* pleafNode = GetArrayByTreeNode(node);
+            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STATIC_DRAW);
+            glDrawArrays(GL_LINE_LOOP, 0, 4);
+            delete []pleafNode;
+        }
+        if(node->child_num == 0)
+            continue;
+        for(int i = 0; i < node->child_num; ++i)
+        {
+            if(node->child[i]!=NULL)
+                q.push(node->child[i]);
+        }
     }
     glUnbind();
 }

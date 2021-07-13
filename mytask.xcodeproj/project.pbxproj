@@ -34,6 +34,7 @@
 /* Begin PBXFileReference section */
 		EA325E9326980F1800025E4D /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		EA325E9426980F1800025E4D /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
+		EA325E97269DC18000025E4D /* ylog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ylog.h; sourceTree = "<group>"; };
 		EA43E5F026942BE80029A110 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		EA6AEA362682DC52009BEC79 /* Shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
 		EA6AEA422682DF8A009BEC79 /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
@@ -80,6 +81,14 @@
 			path = glad;
 			sourceTree = "<group>";
 		};
+		EA325E96269DC13700025E4D /* log */ = {
+			isa = PBXGroup;
+			children = (
+				EA325E97269DC18000025E4D /* ylog.h */,
+			);
+			path = log;
+			sourceTree = "<group>";
+		};
 		EA6AEA52268305F2009BEC79 /* glsl */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +120,7 @@
 		EAD131C3267B783500C79A9E /* mytask */ = {
 			isa = PBXGroup;
 			children = (
+				EA325E96269DC13700025E4D /* log */,
 				EA325E9226980F0100025E4D /* glad */,
 				EA6AEA52268305F2009BEC79 /* glsl */,
 				EAD131DC267B7BA500C79A9E /* Quad */,

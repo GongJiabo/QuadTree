@@ -12,6 +12,17 @@
          contextName = "GetVertex_BFS(int&amp;, QuadTree*, std::__1::vector&lt;int, std::__1::allocator&lt;int&gt; &gt;&amp;):QuadTree.cpp">
       </ContextState>
       <ContextState
+         contextName = "DrawMethod_OneTree::drawLayers_MBR(Shader&amp;):DrawMethod.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "QuadTree::DeleteQuadTreeNode(QuadTreeNode*&amp;):QuadTree.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "f">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "GetVertex_LeafNode(int&amp;, QuadTreeNode*):QuadTree.cpp">
       </ContextState>
       <ContextState
@@ -19,6 +30,14 @@
          <PersistentStrings>
             <PersistentString
                value = "fptr">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "QuadTree::MaintainNodesByMBR_Recursion(double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;, QuadTreeNode*):QuadTree.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "(pNode-&gt;number&lt;&lt;2) | 0x10">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -61,7 +80,13 @@
          contextName = "GetArrayBylevel(int const&amp;, std::__1::vector&lt;float*, std::__1::allocator&lt;float*&gt; &gt; const&amp;, std::__1::vector&lt;int, std::__1::allocator&lt;int&gt; &gt; const&amp;, int&amp;):QuadTree.cpp">
       </ContextState>
       <ContextState
+         contextName = "QuadTree::MaintainNodesByMBR(double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;):QuadTree.cpp">
+      </ContextState>
+      <ContextState
          contextName = "drawTwoLayer(unsigned int&amp;, unsigned int&amp;, int&amp;, glm::mat&lt;4, 4, float, (glm::qualifier)0&gt;&amp;, glm::mat&lt;4, 4, float, (glm::qualifier)0&gt;&amp;, glm::mat&lt;4, 4, float, (glm::qualifier)0&gt;&amp;):main.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "QuadTree::MaintainNodesByMBR_Recursion(double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;, double const&amp;, QuadTreeNode*&amp;):QuadTree.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -66,11 +66,12 @@ extern DRAW_TYPE dType;
 // Generate QuadTree Type
 enum CREATE_TYPE
 {
-    TYPE1,          // 生成满四叉树 选择绘制底层
+    TYPE1 = 0,          // 生成满四叉树 选择绘制底层
     TYPE2,          // 最后一层(底层)动态生成 上层为满四叉树
     TYPE3,          // 根据像素点对应的空间坐标系中map的坐标生成四叉树
     TYPE4,          // 根据包围和MBR生成四叉树
     TYPE5,          // gluUnproject
+    TYPE6,          // 维护一个根节点的四叉树
     OTHER
     // ...
 };

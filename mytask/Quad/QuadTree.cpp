@@ -1,5 +1,21 @@
 #include "QuadTree.h"
 
+bool isIntersect(const Rect& ret, const Rect& mbr)
+{
+    double wa = ret.rt_x - ret.lb_x;
+    double ha = ret.rt_y - ret.lb_y;
+    double wb = mbr.rt_x - mbr.lb_x;
+    double hb = mbr.rt_y - mbr.lb_y;
+    double midXa = (ret.lb_x + ret.rt_x)/2.0;
+    double midYa = (ret.lb_y + ret.rt_y)/2.0;
+    double midXb = (mbr.lb_x + mbr.rt_x)/2.0;
+    double midYb = (mbr.lb_y + mbr.rt_y)/2.0;
+    if(abs(midXa-midXb) <= (wa+wb)/2.0 && abs(midYa-midYb) <= (ha+hb)/2.0)
+        return true;
+    return false;
+
+}
+
 QuadTree::~QuadTree()
 {
 //    std::cout<<"~QuadTree\n";
@@ -20,8 +36,9 @@ void QuadTree::InitQuadTreeNode(Rect rect)
 	m_root->pos_array.clear();
 }
 
-void QuadTree::CreateQuadTreeNode(int depth, Rect rect, QuadTreeNode *p_node)
+void QuadTree::CreateQuadTreeNode(QuadTreeNode* fatherNode, int depth, Rect rect, QuadTreeNode *p_node)
 {
+    p_node->father = fatherNode;
 	p_node->depth = depth;
 	p_node->child_num = 0;
 	p_node->pos_array.clear();
@@ -63,10 +80,10 @@ void QuadTree::Split(QuadTreeNode *pNode)
 	QuadTreeNode *p_node2 = new QuadTreeNode;
 	QuadTreeNode *p_node3 = new QuadTreeNode;
 
-	CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
-	CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
-	CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
-	CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+	CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+	CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+	CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+	CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
 
 	pNode->child[0] = p_node0;
 	pNode->child[1] = p_node1;
@@ -332,6 +349,32 @@ void QuadTree::PrintAllQuadTreeLeafNode(QuadTreeNode *p_node)
 	}
 }
 
+// 删除指定的四叉树节点
+void QuadTree::DeleteQuadTreeNode(QuadTreeNode*& p_node)
+{
+    if(p_node->father==NULL)
+        return;
+    // 处理父节点
+    --p_node->father->child_num;
+    // 处理子节点
+    delete p_node;
+    p_node = NULL;
+}
+
+void QuadTree::DeleteQuadTreeNodeChild(QuadTreeNode *&p_node)
+{
+    if(p_node->child_num == 0)
+        return;
+    // 删除当前节点的孩子节点
+    for(int i = 0; i < p_node->child_num; ++i)
+    {
+        delete p_node->child[i];
+        p_node->child[i] = NULL;
+    }
+    p_node->child_num = 0;
+    return;
+}
+
 // 根据指定深度depth，生成四叉树所有的子节点
 void QuadTree::CreateAllNodes()
 {
@@ -355,10 +398,10 @@ void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
     
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
 
     pNode->child[0] = p_node0;
     pNode->child[1] = p_node1;
@@ -406,10 +449,10 @@ void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<
     vqnode.push_back(p_node2);
     vqnode.push_back(p_node3);
     
-    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
-    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
-    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
-    CreateQuadTreeNode(leaf_node->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+    CreateQuadTreeNode(leaf_node, leaf_node->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+    CreateQuadTreeNode(leaf_node, leaf_node->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+    CreateQuadTreeNode(leaf_node, leaf_node->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+    CreateQuadTreeNode(leaf_node, leaf_node->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
     
     leaf_node->child[0] = p_node0;
     leaf_node->child[1] = p_node1;
@@ -421,20 +464,20 @@ void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<
     GenerateMoreInNode(pos, leaf_node->child[index], vqnode, dstDepth);
 }
 
-void QuadTree::CreateNodesByMBR(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter)
+void QuadTree::CreateNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter)
 {
     double lbx = minx < -180.0 ? -180.0 : minx;
     double rtx = maxx > 180.0 ? 180.0 : maxx;
     double lby = miny < -90.0 ? -90.0 : miny;
     double rty = maxy > 90.0 ? 90.0 : maxy;
     //
-    GenerateNodesByMRB(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
+    CreateNodesByMBR_Recursion(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
 }
 
-void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const double miny, const double maxy, const double xcenter, const double ycenter, QuadTreeNode* pNode)
+void QuadTree::CreateNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode* pNode)
 {
     // 当前pNode的rect 在 MBR 不相交/外部
-    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
+    if(!pNode && !isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
         return;
     
     bool up = ((pNode->rect.lb_y + pNode->rect.rt_y) >= (2*ycenter));
@@ -459,10 +502,10 @@ void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const do
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
     
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
-    CreateQuadTreeNode(pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
+    CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
 
     pNode->child[0] = p_node0;
     pNode->child[1] = p_node1;
@@ -470,8 +513,98 @@ void QuadTree::GenerateNodesByMRB(const double minx, const double maxx, const do
     pNode->child[3] = p_node3;
     pNode->child_num = 4;
     for(int i = 0; i < CHILD_NUM; ++i)
-        GenerateNodesByMRB(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i]);
+        CreateNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i]);
 }
+
+// 根据指定MBR区域(minx, maxx, miny, maxy) 生成 区域内的四叉树节点
+void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter)
+{
+    double lbx = minx < -180.0 ? -180.0 : minx;
+    double rtx = maxx > 180.0 ? 180.0 : maxx;
+    double lby = miny < -90.0 ? -90.0 : miny;
+    double rty = maxy > 90.0 ? 90.0 : maxy;
+    //
+    MaintainNodesByMBR_Recursion(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
+}
+
+void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode)
+
+{    
+    // 当前pNode的节点是否与MBR相交
+    // (如果不相交删除当前节点 删除后会出现底图缺失的情况 因此删除孩子节点) 并返回
+//    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
+    if(!pNode && !isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
+    {
+        DeleteQuadTreeNode(pNode);
+//        DeleteQuadTreeNodeChild(pNode);
+        return;
+    }
+
+    // 判断所需的深度 对过深的节点进行释放
+    bool up = ((pNode->rect.lb_y + pNode->rect.rt_y) >= (2*ycenter));
+    // 下半平面 最大深度
+    if(!up && pNode->depth >= m_depth)
+    {
+        // 删除当前节点的孩子节点
+        DeleteQuadTreeNodeChild(pNode);
+        return;
+    }
+    // 上半平面 最大深度-1
+    if(up && pNode->depth >= m_depth-1)
+    {
+        DeleteQuadTreeNodeChild(pNode);
+        return;
+    }
+
+    // 如果当前节点与MBR相交 递归下一层
+    // 孩子节点不足且深度不足 生成孩子节点
+    if(pNode->child_num < CHILD_NUM)
+    {
+        // 生成子节点并递归
+        double start_x = pNode->rect.lb_x;
+        double start_y = pNode->rect.lb_y;
+        double sub_width = (pNode->rect.rt_x - pNode->rect.lb_x) / 2;
+        double sub_height = (pNode->rect.rt_y - pNode->rect.lb_y) / 2;
+        double end_x = pNode->rect.rt_x;
+        double end_y = pNode->rect.rt_y;
+        // 创建pNode的孩子节点
+        if(!pNode->child[0])
+        {
+            QuadTreeNode *p_node0 = new QuadTreeNode;
+            p_node0->number = ((pNode->number<<2) | 0x00);
+            CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
+            pNode->child[0] = p_node0;
+            ++pNode->child_num;
+        }
+        if(!pNode->child[1])
+        {
+            QuadTreeNode *p_node1 = new QuadTreeNode;
+            p_node1->number = ((pNode->number<<2) | 0x01);
+            CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
+            pNode->child[1] = p_node1;
+            ++pNode->child_num;
+        }
+        if(!pNode->child[2])
+        {
+            QuadTreeNode *p_node2 = new QuadTreeNode;
+            p_node2->number = ((pNode->number<<2) | 0x02);
+            CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height),p_node2);
+            pNode->child[2] = p_node2;
+            ++pNode->child_num;
+        }
+        if(!pNode->child[3])
+        {
+            QuadTreeNode *p_node3 = new QuadTreeNode;
+            p_node3->number = ((pNode->number<<2) | 0x03);
+            CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
+            pNode->child[3] = p_node3;
+            ++pNode->child_num;
+        }
+    }
+    for(int i = 0; i < CHILD_NUM; ++i)
+        MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i]);
+}
+
 
 /*----------------------------*/
 

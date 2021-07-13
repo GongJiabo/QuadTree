@@ -25,9 +25,6 @@ float lastX =  SCR_WIDTH / 2.0;
 float lastY =  SCR_HEIGHT / 2.0;
 float fov   =  40.0f;
 
-//// QuadTree
-//QuadTree* qtree = NULL;
-
 // Draw type
 DRAW_TYPE dType = DRAW_TYPE::SCREEN;
 
