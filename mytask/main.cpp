@@ -192,7 +192,7 @@ int main()
         // create transformations
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();

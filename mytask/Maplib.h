@@ -23,6 +23,7 @@
 
 #include <map>
 
+#include "log/ylog.h"
 #include "Quad/QuadTree.h"
 #include "Shader.h"
 #include "Camera.h"
@@ -87,6 +88,12 @@ struct Character {
 extern std::map<GLchar, Character> Characters;
 
 extern unsigned int VBO, VAO;
+
+// log file
+extern YLog flog;
+
+// 十进制转二进制
+int DectoBinaryNumber(unsigned int n);
 
 // 调用freetype绘制文字函数
 void RenderText(Shader &shader, std::string text, float x, float y, float scale, glm::vec3 color);

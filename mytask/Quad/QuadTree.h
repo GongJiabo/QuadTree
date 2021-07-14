@@ -8,7 +8,7 @@
 #include <vector>
 #include <queue>
 #include <string>
-
+#include "Maplib.h"
 using namespace std;
 
 const int RAND_NUM = 500;
@@ -63,7 +63,7 @@ struct PosInfo
 
 struct QuadTreeNode
 {
-    QuadTreeNode():rect(), child_num(0), depth(0), number(0)
+    QuadTreeNode():rect(), child_num(0), depth(0), number("")
     {
         pos_array.clear();
         for(auto& p : child)
@@ -87,7 +87,7 @@ struct QuadTreeNode
     QuadTreeNode *child[CHILD_NUM];         // 子区域
     QuadTreeNode *father;                   // 父节点
     int            depth;                   // 深度
-    unsigned int number;                    // 索引
+    std::string    number;                  // 索引
 };
 
 class QuadTree 

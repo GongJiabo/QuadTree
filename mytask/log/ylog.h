@@ -16,12 +16,12 @@ class YLog{
     OVER
   };
   enum Level {
-    DEBUG = 0,
+    LDEBUG = 0,
     INFO,
     ERR
   };
   YLog(const int level, const std::string &logfile, const int type = YLog::OVER) : minlevel_(level) {
-    assert((this->ERR == level || this->INFO == level || this->DEBUG == level) && "Logfile create failed, please check the level(YLog::ERR or YLog::INFO or YLog::DEBUG.");
+    assert((this->ERR == level || this->INFO == level || this->LDEBUG == level) && "Logfile create failed, please check the level(YLog::ERR or YLog::INFO or YLog::DEBUG.");
     if (type == this->ADD) {
       this->of_.open(logfile.c_str(),std::ios_base::out|std::ios_base::app);
     } else if (type == this->OVER) {
@@ -38,7 +38,7 @@ class YLog{
     }
     return;
   }
-  template<typename T> void W(const std::string &codefile, const int codeline, const int level, const std::string &info, const T &value) {
+  template<typename T> void W(const std::string &codefile, const int codeline, const int level, const std::string &info, const std::string& index, T &value) {
     assert(this->of_.is_open() && "Logfile write failed.");
     if (this->minlevel_ <= level)
     {
@@ -59,12 +59,12 @@ class YLog{
         this->of_ << "ERROR";
       } else if (this->INFO == level) {
         this->of_ << "INFO";
-      } else if (this->DEBUG == level) {
+      } else if (this->LDEBUG == level) {
         this->of_ << "DEBUG";
       } else {
         assert(0 && "Log write failed, please check the level(YLog::ERR or YLog::INFO or YLog::DEBUG.");
       }
-      this->of_ << "]: [" << codefile << ':' << codeline << "]:" << info << ':' << value << std::endl;
+      this->of_ << "]: [" << codefile << ": " << codeline << "] " << info << ":" << index << "  Depth:" << value << std::endl;
     }
     return;
   }

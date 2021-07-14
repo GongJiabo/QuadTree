@@ -106,7 +106,7 @@ void QuadTree::Insert(PosInfo pos, QuadTreeNode *p_node)
 		int index = GetIndex(pos, p_node);
 		if (index >= UR && index <= LR)
 		{
-            p_node->child[index]->number = ((p_node->number << 2) | index);
+            p_node->child[index]->number = ( p_node->number + to_string(index));
 			Insert(pos, p_node->child[index]);
 		}
 	}
@@ -354,6 +354,8 @@ void QuadTree::DeleteQuadTreeNode(QuadTreeNode*& p_node)
 {
     if(p_node->father==NULL)
         return;
+    // 输出日志
+    flog.W(__FILE__, __LINE__, YLog::INFO, "Delete Node", p_node->number, p_node->depth);
     // 处理父节点
     --p_node->father->child_num;
     // 处理子节点
@@ -365,11 +367,18 @@ void QuadTree::DeleteQuadTreeNodeChild(QuadTreeNode *&p_node)
 {
     if(p_node->child_num == 0)
         return;
+    // 输出日志
+    
+    flog.W(__FILE__, __LINE__, YLog::INFO, "Current Node ", p_node->number, p_node->depth);
     // 删除当前节点的孩子节点
-    for(int i = 0; i < p_node->child_num; ++i)
+    for(int i = 0; i < CHILD_NUM; ++i)
     {
-        delete p_node->child[i];
-        p_node->child[i] = NULL;
+        if(p_node->child[i]!=NULL)
+        {
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Delete Child Node["+to_string(i)+"]", p_node->child[i]->number, p_node->child[i]->depth);
+            delete p_node->child[i];
+            p_node->child[i] = NULL;
+        }
     }
     p_node->child_num = 0;
     return;
@@ -397,7 +406,12 @@ void QuadTree::GenerateAllNodes(int curDepth, QuadTreeNode* pNode)
     QuadTreeNode *p_node1 = new QuadTreeNode;
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
-    
+    //
+    p_node0->number = (pNode->number + "0");
+    p_node1->number = (pNode->number + "1");
+    p_node2->number = (pNode->number + "2");
+    p_node3->number = (pNode->number + "3");
+    //
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
@@ -443,6 +457,11 @@ void QuadTree::GenerateMoreInNode(PosInfo pos, QuadTreeNode*& leaf_node, vector<
     QuadTreeNode *p_node1 = new QuadTreeNode;
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
+    //
+    p_node0->number = (p_node0->number + "0");
+    p_node1->number = (p_node1->number + "1");
+    p_node2->number = (p_node2->number + "2");
+    p_node3->number = (p_node3->number + "3");
     //
     vqnode.push_back(p_node0);
     vqnode.push_back(p_node1);
@@ -502,6 +521,11 @@ void QuadTree::CreateNodesByMBR_Recursion(const double& minx, const double& maxx
     QuadTreeNode *p_node2 = new QuadTreeNode;
     QuadTreeNode *p_node3 = new QuadTreeNode;
     
+    p_node0->number = (pNode->number + "0");
+    p_node1->number = (pNode->number + "1");
+    p_node2->number = (pNode->number + "2");
+    p_node3->number = (pNode->number + "3");
+    
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
     CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), p_node2);
@@ -524,19 +548,22 @@ void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const 
     double lby = miny < -90.0 ? -90.0 : miny;
     double rty = maxy > 90.0 ? 90.0 : maxy;
     //
-    MaintainNodesByMBR_Recursion(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
+//    MaintainNodesByMBR_Recursion(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
+    MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, m_root);
+
 }
 
 void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode)
-
-{    
+{
+    if(pNode==NULL)
+        return;
+    
     // 当前pNode的节点是否与MBR相交
     // (如果不相交删除当前节点 删除后会出现底图缺失的情况 因此删除孩子节点) 并返回
-//    if(pNode->rect.rt_x < minx || pNode->rect.rt_y < miny || pNode->rect.lb_x > maxx || pNode->rect.lb_y > maxy)
-    if(!pNode && !isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
+    if(!isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
+//    if(pNode->rect.lb_x > maxx || pNode->rect.rt_x < minx || pNode->rect.lb_y > maxy || pNode->rect.rt_y < miny )
     {
         DeleteQuadTreeNode(pNode);
-//        DeleteQuadTreeNodeChild(pNode);
         return;
     }
 
@@ -545,7 +572,6 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
     // 下半平面 最大深度
     if(!up && pNode->depth >= m_depth)
     {
-        // 删除当前节点的孩子节点
         DeleteQuadTreeNodeChild(pNode);
         return;
     }
@@ -568,37 +594,46 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
         double end_x = pNode->rect.rt_x;
         double end_y = pNode->rect.rt_y;
         // 创建pNode的孩子节点
-        if(!pNode->child[0])
+        if(!pNode->child[0] &&
+           isIntersect(Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), Rect(minx, miny, maxx, maxy)))
         {
             QuadTreeNode *p_node0 = new QuadTreeNode;
-            p_node0->number = ((pNode->number<<2) | 0x00);
+            p_node0->number = (pNode->number + "0");
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
             pNode->child[0] = p_node0;
             ++pNode->child_num;
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[0]", p_node0->number, p_node0->depth);
         }
-        if(!pNode->child[1])
+        if(!pNode->child[1] &&
+           isIntersect(Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), Rect(minx, miny, maxx, maxy)))
         {
             QuadTreeNode *p_node1 = new QuadTreeNode;
-            p_node1->number = ((pNode->number<<2) | 0x01);
+            p_node1->number = (pNode->number + "1");
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
             pNode->child[1] = p_node1;
             ++pNode->child_num;
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[1]", p_node1->number, p_node1->depth);
+
         }
-        if(!pNode->child[2])
+        if(!pNode->child[2] &&
+           isIntersect(Rect(start_x, start_y, start_x + sub_width, start_y + sub_height), Rect(minx, miny, maxx, maxy)))
         {
             QuadTreeNode *p_node2 = new QuadTreeNode;
-            p_node2->number = ((pNode->number<<2) | 0x02);
+            p_node2->number = (pNode->number + "2");
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height),p_node2);
             pNode->child[2] = p_node2;
             ++pNode->child_num;
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[2]", p_node2->number, p_node2->depth);
         }
-        if(!pNode->child[3])
+        if(!pNode->child[3] &&
+           isIntersect(Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), Rect(minx, miny, maxx, maxy)))
         {
             QuadTreeNode *p_node3 = new QuadTreeNode;
-            p_node3->number = ((pNode->number<<2) | 0x03);
+            p_node3->number = (pNode->number + "3");
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
             pNode->child[3] = p_node3;
             ++pNode->child_num;
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[3]", p_node3->number, p_node3->depth);
         }
     }
     for(int i = 0; i < CHILD_NUM; ++i)

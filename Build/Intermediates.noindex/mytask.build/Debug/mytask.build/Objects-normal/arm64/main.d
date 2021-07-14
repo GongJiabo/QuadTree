@@ -268,6 +268,7 @@ dependencies: /Users/jbgong/Desktop/mytask/mytask/main.cpp \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/fterrors.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/ftmoderr.h \
   /opt/homebrew/Cellar/freetype/2.10.4/include/freetype2/freetype/fterrdef.h \
+  /Users/jbgong/Desktop/mytask/mytask/log/ylog.h \
   /Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.h \
   /Users/jbgong/Desktop/mytask/mytask/Camera.h \
   /usr/local/include/glad/glad.h

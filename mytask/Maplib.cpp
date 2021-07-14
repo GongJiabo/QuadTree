@@ -29,7 +29,7 @@ float fov   =  40.0f;
 DRAW_TYPE dType = DRAW_TYPE::SCREEN;
 
 // Generate QuadTree Type
-CREATE_TYPE cType = CREATE_TYPE::TYPE5;
+CREATE_TYPE cType = CREATE_TYPE::TYPE6;
 
 // Holds all state information relevant to a character as loaded using FreeType
 
@@ -37,7 +37,23 @@ std::map<GLchar, Character> Characters = {};
 
 unsigned int VBO, VAO;
 
+//log file
+YLog flog(YLog::INFO, "nodeLog.txt", YLog::OVER);
 
+
+// 十进制转二进制 输出编号
+
+int DectoBinaryNumber(unsigned int n)
+{
+    int a;
+    a = n % 2; // 取余
+    n = n >> 1;  //右移一位 相当于除以2
+    if(0 != n)
+    {
+        DectoBinaryNumber(n);
+    }
+    return a;
+}
 
 // render line of text
 // -------------------

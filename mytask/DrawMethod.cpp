@@ -669,7 +669,7 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
         }
         if(node->child_num == 0)
             continue;
-        for(int i = 0; i < node->child_num; ++i)
+        for(int i = 0; i < CHILD_NUM; ++i)
         {
             if(node->child[i]!=NULL)
                 q.push(node->child[i]);
