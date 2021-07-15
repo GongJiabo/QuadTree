@@ -1,139 +1,55 @@
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:0  Depth:1
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:1  Depth:1
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:2  Depth:1
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:3  Depth:1
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:00  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:01  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:02  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:03  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:10  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:11  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:12  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:13  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:20  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:21  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:22  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:23  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:200  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:201  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:202  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:203  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:210  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:213  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:220  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:230  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:231  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:30  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:31  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:32  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:33  Depth:2
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:301  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:302  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:310  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:311  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:312  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:313  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:320  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:321  Depth:3
-2021-7-14 16:7:33 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:331  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:300  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:303  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:330  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:22  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:23  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:32  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:33  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:11  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:12  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:21  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:23  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:230  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:231  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:32  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:33  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:320  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:321  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:330  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:331  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:11  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:12  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:21  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:22  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:210  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:213  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:220  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:300  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:303  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:330  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:11  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:12  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:21  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:22  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:300  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:303  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:330  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:232  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:233  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:322  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:323  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:332  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:333  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:00  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:01  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:10  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:12  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:21  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:22  Depth:2
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:210  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:213  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:220  Depth:3
-2021-7-14 16:7:34 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:223  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:300  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:303  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:330  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:333  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:00  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:01  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:10  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:11  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:223  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:232  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:233  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:322  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:323  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:332  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:11  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:12  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:21  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:22  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:300  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:303  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:330  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:232  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:233  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:322  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:323  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:332  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:333  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:00  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:01  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:12  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:10  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:21  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:22  Depth:2
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:210  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:213  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 605] Create Child Node[0]:220  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 636] Create Child Node[3]:223  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:300  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:303  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:330  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:333  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:211  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:212  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 615] Create Child Node[1]:221  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 626] Create Child Node[2]:222  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:211  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:212  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:221  Depth:3
-2021-7-14 16:7:35 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp: 358] Delete Node:222  Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:0 Depth:1
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:1 Depth:1
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:2 Depth:1
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:3 Depth:1
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:00 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:01 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:02 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:03 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:10 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:11 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:12 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:13 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:20 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:21 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:22 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:23 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:200 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:201 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:202 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:203 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:210 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:213 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:220 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:230 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:231 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:30 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:31 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:32 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:33 Depth:2
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:301 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:302 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:310 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:311 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:312 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:313 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:320 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:321 Depth:3
+2021-7-15 11:14:11 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:331 Depth:3
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:11 Depth:2
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:12 Depth:2
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:21 Depth:2
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:22 Depth:2
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:300 Depth:3
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:303 Depth:3
+2021-7-15 11:14:16 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:330 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:11 Depth:2
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:12 Depth:2
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:607] Create Child Node[1]:21 Depth:2
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:618] Create Child Node[2]:22 Depth:2
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:210 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:628] Create Child Node[3]:213 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:597] Create Child Node[0]:220 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:300 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:303 Depth:3
+2021-7-15 11:14:17 [INFO]: [/Users/jbgong/Desktop/mytask/mytask/Quad/QuadTree.cpp:358] Delete Node:330 Depth:3

@@ -543,14 +543,7 @@ void QuadTree::CreateNodesByMBR_Recursion(const double& minx, const double& maxx
 // 根据指定MBR区域(minx, maxx, miny, maxy) 生成 区域内的四叉树节点
 void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter)
 {
-    double lbx = minx < -180.0 ? -180.0 : minx;
-    double rtx = maxx > 180.0 ? 180.0 : maxx;
-    double lby = miny < -90.0 ? -90.0 : miny;
-    double rty = maxy > 90.0 ? 90.0 : maxy;
-    //
-//    MaintainNodesByMBR_Recursion(lbx, rtx, lby, rty, xcenter, ycenter, m_root);
     MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, m_root);
-
 }
 
 void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode)
@@ -561,7 +554,6 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
     // 当前pNode的节点是否与MBR相交
     // (如果不相交删除当前节点 删除后会出现底图缺失的情况 因此删除孩子节点) 并返回
     if(!isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
-//    if(pNode->rect.lb_x > maxx || pNode->rect.rt_x < minx || pNode->rect.lb_y > maxy || pNode->rect.rt_y < miny )
     {
         DeleteQuadTreeNode(pNode);
         return;

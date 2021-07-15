@@ -189,7 +189,7 @@ int main()
         RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
         
         
-        // create transformations
+        // 创建变换矩阵
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -203,16 +203,12 @@ int main()
         // 查看相机位置和方向
         //  printCameraInfo();
         
-        // draw our first triangle
+        // 使用着色器
         ourShader.use();
-        
         // 通过一致变量（uniform修饰的变量）引用将一致变量值传入渲染管线
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
         ourShader.setMat4("model", model);
-        
-        // 查看当前所需的四叉树深度
-//        cout<<"SHOWDETPH:  " << showDepth << endl;
         
         switch (cType)
         {
