@@ -375,7 +375,7 @@ void QuadTree::DeleteQuadTreeNodeChild(QuadTreeNode *&p_node)
     {
         if(p_node->child[i]!=NULL)
         {
-            flog.W(__FILE__, __LINE__, YLog::INFO, "Delete Child Node["+to_string(i)+"]", p_node->child[i]->number, p_node->child[i]->depth);
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Delete ChildNode["+to_string(i)+"]", p_node->child[i]->number, p_node->child[i]->depth);
             delete p_node->child[i];
             p_node->child[i] = NULL;
         }
@@ -543,6 +543,9 @@ void QuadTree::CreateNodesByMBR_Recursion(const double& minx, const double& maxx
 // 根据指定MBR区域(minx, maxx, miny, maxy) 生成 区域内的四叉树节点
 void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter)
 {
+    // 当前视野范围与世界地图不相交（即视野范围内没有东西）
+    if(!isIntersect(Rect(minx, miny, maxx, maxy), m_root->rect))
+       return;
     MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, m_root);
 }
 
@@ -552,7 +555,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
         return;
     
     // 当前pNode的节点是否与MBR相交
-    // (如果不相交删除当前节点 删除后会出现底图缺失的情况 因此删除孩子节点) 并返回
+    // 如果不相交删除当前节点
     if(!isIntersect(pNode->rect, Rect(minx, miny, maxx, maxy)))
     {
         DeleteQuadTreeNode(pNode);
@@ -594,7 +597,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y + sub_height, end_x, end_y), p_node0);
             pNode->child[0] = p_node0;
             ++pNode->child_num;
-            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[0]", p_node0->number, p_node0->depth);
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create ChildNode[0]", p_node0->number, p_node0->depth);
         }
         if(!pNode->child[1] &&
            isIntersect(Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), Rect(minx, miny, maxx, maxy)))
@@ -604,7 +607,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y + sub_height, start_x + sub_width, end_y), p_node1);
             pNode->child[1] = p_node1;
             ++pNode->child_num;
-            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[1]", p_node1->number, p_node1->depth);
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create ChildNode[1]", p_node1->number, p_node1->depth);
 
         }
         if(!pNode->child[2] &&
@@ -615,7 +618,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x, start_y, start_x + sub_width, start_y + sub_height),p_node2);
             pNode->child[2] = p_node2;
             ++pNode->child_num;
-            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[2]", p_node2->number, p_node2->depth);
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create ChildNode[2]", p_node2->number, p_node2->depth);
         }
         if(!pNode->child[3] &&
            isIntersect(Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), Rect(minx, miny, maxx, maxy)))
@@ -625,7 +628,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
             CreateQuadTreeNode(pNode, pNode->depth + 1, Rect(start_x + sub_width, start_y, end_x, start_y + sub_height), p_node3);
             pNode->child[3] = p_node3;
             ++pNode->child_num;
-            flog.W(__FILE__, __LINE__, YLog::INFO, "Create Child Node[3]", p_node3->number, p_node3->depth);
+            flog.W(__FILE__, __LINE__, YLog::INFO, "Create ChildNode[3]", p_node3->number, p_node3->depth);
         }
     }
     for(int i = 0; i < CHILD_NUM; ++i)

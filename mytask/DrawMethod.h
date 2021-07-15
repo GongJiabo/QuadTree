@@ -92,6 +92,9 @@ public:
     void SetPreMbr(Rect& preMbr);
     void SetCurMbr(Rect& curMbr);
     
+    // 生成四叉树并绘制方案6:
+    // 1.根据屏幕四个顶点确定在地图底图的包围和矩形MBR
+    // 2.DFS遍历所有四叉树节点 对不在范围内的节点进行删除
     void drawLayers_MBR(Shader& ourShader);
 };
 #endif /* DrawMethod_hpp */

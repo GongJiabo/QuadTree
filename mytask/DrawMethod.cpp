@@ -53,7 +53,7 @@ void DrawMethod::glBind()
 {
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);         // VBO赋予了GL_ARRAY_BUFFER的类型，告诉Opengl这个VBO变量是一个顶点缓冲对象
 }
 
 void DrawMethod::glUnbind()
@@ -243,6 +243,12 @@ void DrawMethod::drawTwoLater_dynLast(Shader& ourShader)
                 
                 ourShader.setVec4("inColor", glm::vec4(0.15f * vqnode[i]->depth, 1.0f - 0.1 * vqnode[i]->depth, cos(vqnode[i]->depth), 1.0f));
                 float* ptrOneNode = GetArrayByTreeNode(vqnode[i]);
+                
+                // void glBufferData(GLenum target, GLsizeiptr size, const void * data, GLenum usage);
+                // 第一个参数表示目标的缓冲类型，这里指当前绑定到GL_ARRAY_BUFFER上的顶点缓冲对象
+                // 第二个参数表示数据大小（字节为单位）
+                // 第三个参数表示我们实际发出的数据
+                // 第四个参数GL_STATIC_DRAW表示Opengl如何处理上传的数据
                 glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), ptrOneNode , GL_STATIC_DRAW);
                 glDrawArrays(GL_LINE_LOOP, 0, 4);
             }
@@ -642,18 +648,25 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
         miny = min(miny, intersectPoint_wordSpace.y);
         maxy = max(maxy, intersectPoint_wordSpace.y);
     }
-    //
-//    cout << "minx="<<minx<< "  maxx="<<maxx<<"  miny="<<miny<<"  maxy="<<maxy<<endl;
+
+    /* core method */
     qtree->MaintainNodesByMBR(minx, maxx, miny, maxy, xcenter, ycenter);
     
     // 绑定VAO VBO
     glBind();
+    
+    // void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void * pointer);
+    // 参数含义: 属性的location 属性大小 数据类型 是否希望数据标准化 步长(数据之间的内存间隔) 偏移量(在一段数据中, 指定的数据便宜多少位置开始)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    // void glEnableVertexAttribArray(GLuint index);
+    // 参数含义: 要使能的顶点属性索引，这里要说明，0表示使能顶点属性中的位置信息，也就是坐标值
     glEnableVertexAttribArray(0);
     
     // 每个QuadTreeNode叶子节点绘制一次矩形
     queue<QuadTreeNode*> q;
     q.push(qtree->GetTreeRoot());
+    
+    vector<float> vdata;        // 用来保存所有需要绘制的point
     while(!q.empty())
     {
         QuadTreeNode* node = q.front();
@@ -663,8 +676,13 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
         {
             ourShader.setVec4("inColor", glm::vec4(0.15f * node->depth, 1.0f - 0.1 * node->depth,cos(node->depth), 1.0f));
             float* pleafNode = GetArrayByTreeNode(node);
-            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STATIC_DRAW);
-            glDrawArrays(GL_LINE_LOOP, 0, 4);
+//            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STREAM_DRAW);
+//            void* ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+//            memcpy(ptr, pleafNode, sizeof(pleafNode)*12);
+//            glDrawArrays(GL_LINE_LOOP, 0, 4);
+//            glUnmapBuffer(GL_ARRAY_BUFFER);
+            for(int i = 0; i < 12; ++i)
+                vdata.push_back(pleafNode[i]);
             delete []pleafNode;
         }
         if(node->child_num == 0)
@@ -675,5 +693,15 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
                 q.push(node->child[i]);
         }
     }
+    // 一次缓冲 在10层的时候能提高一倍！！！（fps:9->18）
+    float *pdraw = new float[vdata.size()];
+    copy(vdata.begin(), vdata.end(), pdraw);
+    glBufferData(GL_ARRAY_BUFFER, vdata.size() * sizeof(float), pdraw , GL_STREAM_DRAW);
+    for(int i = 0; i < vdata.size()/12; ++i)
+        glDrawArrays(GL_LINE_LOOP, i*4, 4);
+    delete []pdraw;
+    vdata.clear();
+    vector<float>{}.swap(vdata);
+    //
     glUnbind();
 }

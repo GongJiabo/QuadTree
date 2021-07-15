@@ -6,14 +6,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);          // �
 void scroll_callback(GLFWwindow* windows, double xoffset, double yoffset);  // 回调函数，监听鼠标滚轮事件
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);     // 回调函数，监听键盘事件，用来更换方法
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);              // 回调函数，窗口变换
-void processInput(GLFWwindow *window);                                      // 处理键盘事件，根据键盘按键变化位置
+void processInput(GLFWwindow *window);                                      // 处理键盘事件，根据键盘按键变移动相机位置
 void printCameraInfo();
 
 
 int main()
 {
     // 查看类对象所占内存大小
-//    QuadTreeNode qqnode, qqtree;
     cout << "SIZE OF QUADTREE: "<< sizeof(QuadTree) << endl;
     cout << "SIZE OF QUADTREENODE: "<< sizeof(QuadTreeNode) << endl;
     
@@ -49,6 +48,8 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
     // GLFW键盘监听
     glfwSetKeyCallback(window, key_callback);
+    // 设置画面位于屏幕上的位置
+    glfwSetWindowPos(window, 0, 0);
     
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -148,9 +149,9 @@ int main()
     drawOneTree.initQuadTree(TREE_DEPTH, MAX_OBJECT, Rect(LB_X, LB_Y, RT_X, RT_Y));
     
     // ------------------------------------
-    // 设置顶点缓冲对象VBO与顶点数组对象VAO的ID
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+    // 创建顶点缓冲对象VBO与顶点数组对象VAO
+    glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
+    glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
