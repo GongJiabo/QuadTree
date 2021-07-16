@@ -650,7 +650,9 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
     }
 
     /* core method */
-    qtree->MaintainNodesByMBR(minx, maxx, miny, maxy, xcenter, ycenter);
+    // 维护一个根节点的同时将叶子节点保存下来
+    vector<vector<float>> vvterices;
+    qtree->MaintainNodesByMBR(minx, maxx, miny, maxy, xcenter, ycenter, vvterices);
     
     // 绑定VAO VBO
     glBind();
@@ -662,46 +664,41 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
     // 参数含义: 要使能的顶点属性索引，这里要说明，0表示使能顶点属性中的位置信息，也就是坐标值
     glEnableVertexAttribArray(0);
     
-    // 每个QuadTreeNode叶子节点绘制一次矩形
-    queue<QuadTreeNode*> q;
-    q.push(qtree->GetTreeRoot());
-    
-    vector<float> vdata;        // 用来保存所有需要绘制的point
-    while(!q.empty())
+    // 两次缓冲 子父层分开绘制 在10层性能提高(fps: 9 -> 17)
+    // 应该尽量减少glBufferdata调用的次数
+    for(int i = 0; i < 2; ++i)
     {
-        QuadTreeNode* node = q.front();
-        q.pop();
-        // 绘制
-        if(node->depth >= qtree->GetDepth() - 1)
-        {
-            ourShader.setVec4("inColor", glm::vec4(0.15f * node->depth, 1.0f - 0.1 * node->depth,cos(node->depth), 1.0f));
-            float* pleafNode = GetArrayByTreeNode(node);
-//            glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), pleafNode , GL_STREAM_DRAW);
-//            void* ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-//            memcpy(ptr, pleafNode, sizeof(pleafNode)*12);
-//            glDrawArrays(GL_LINE_LOOP, 0, 4);
-//            glUnmapBuffer(GL_ARRAY_BUFFER);
-            for(int i = 0; i < 12; ++i)
-                vdata.push_back(pleafNode[i]);
-            delete []pleafNode;
-        }
-        if(node->child_num == 0)
-            continue;
-        for(int i = 0; i < CHILD_NUM; ++i)
-        {
-            if(node->child[i]!=NULL)
-                q.push(node->child[i]);
-        }
+        ourShader.setVec4("inColor", glm::vec4(0.1f * (i+showDepth/2.0), 1.0f - 0.2 * (i+showDepth/2.0), 1.0f-sin(i), 1.0f));
+        float *pdraw = new float[vvterices[i].size()];
+        copy(vvterices[i].begin(), vvterices[i].end(), pdraw);
+        
+        glBufferData(GL_ARRAY_BUFFER, vvterices[i].size() * sizeof(float), pdraw , GL_STREAM_DRAW);
+//        glBufferSubData(GL_ARRAY_BUFFER, 0, vvterices[i].size() * sizeof(float), pdraw);
+        
+//        // 获取缓冲区的映射指针ptr
+//        void * ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+//        // 拷贝我们的数据到指针所指向的位置
+//        memcpy(ptr, pdraw, vvterices[i].size() * sizeof(float));
+//        // 使用完之后释放映射的指针
+//        glUnmapBuffer(GL_ARRAY_BUFFER);
+
+    
+        for(int j = 0; j < vvterices[i].size()/12; ++j)
+            glDrawArrays(GL_LINE_LOOP, j*4, 4);
+//        int *arrayfirsts = new int[vvterices[i].size()/12];
+//        int *arraycounts = new int[vvterices[i].size()/12];
+//        for(int j = 0; j < vvterices[i].size()/12; ++j)
+//        {
+//            arrayfirsts[j] = j*4;
+//            arraycounts[j] = 4;
+//        }
+//        glMultiDrawArrays(GL_LINE_LOOP, arrayfirsts, arraycounts, vvterices[i].size()/12);
+//        delete []arraycounts;
+//        delete []arrayfirsts;
+        
+        delete []pdraw;
     }
-    // 一次缓冲 在10层的时候能提高一倍！！！（fps:9->18）
-    float *pdraw = new float[vdata.size()];
-    copy(vdata.begin(), vdata.end(), pdraw);
-    glBufferData(GL_ARRAY_BUFFER, vdata.size() * sizeof(float), pdraw , GL_STREAM_DRAW);
-    for(int i = 0; i < vdata.size()/12; ++i)
-        glDrawArrays(GL_LINE_LOOP, i*4, 4);
-    delete []pdraw;
-    vdata.clear();
-    vector<float>{}.swap(vdata);
-    //
+    vvterices.clear();
+
     glUnbind();
 }

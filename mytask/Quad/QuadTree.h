@@ -134,8 +134,8 @@ public:
     void CreateNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode* pNode);
     
     // 根据指定MBR区域(minx, maxx, miny, maxy) 调整 区域的四叉树节点(始终操作一个根节点)
-    void MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter);
-    void MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode);
+    void MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, vector<vector<float>>& vvertices);
+    void MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode, vector<vector<float>>& vvertices);
     
     
     // 根据所查询的位置，返回查询到的该点所属的叶子节点，并生成该叶子节点的下一层(child)

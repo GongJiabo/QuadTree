@@ -8,13 +8,6 @@
 #ifndef DrawMethod_hpp
 #define DrawMethod_hpp
 
-// glm
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-// shader
-#include "Shader.h"
-// para
 #include "Maplib.h"
 
 // 每一帧都创建一个DrawMethod对象

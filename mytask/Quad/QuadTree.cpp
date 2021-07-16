@@ -541,15 +541,16 @@ void QuadTree::CreateNodesByMBR_Recursion(const double& minx, const double& maxx
 }
 
 // 根据指定MBR区域(minx, maxx, miny, maxy) 生成 区域内的四叉树节点
-void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter)
+void QuadTree::MaintainNodesByMBR(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, vector<vector<float>>& vvertices)
 {
+    vvertices = vector<vector<float>>(2, vector<float>{});
     // 当前视野范围与世界地图不相交（即视野范围内没有东西）
     if(!isIntersect(Rect(minx, miny, maxx, maxy), m_root->rect))
        return;
-    MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, m_root);
+    MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, m_root, vvertices);
 }
 
-void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode)
+void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& maxx, const double& miny, const double& maxy, const double& xcenter, const double& ycenter, QuadTreeNode*& pNode, vector<vector<float>>& vvertices)
 {
     if(pNode==NULL)
         return;
@@ -568,12 +569,20 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
     if(!up && pNode->depth >= m_depth)
     {
         DeleteQuadTreeNodeChild(pNode);
+        float* ptr = GetArrayByTreeNode(pNode);
+        for(int i = 0; i < 12; ++i)
+            vvertices[1].push_back(ptr[i]);
+        delete ptr;
         return;
     }
     // 上半平面 最大深度-1
     if(up && pNode->depth >= m_depth-1)
     {
         DeleteQuadTreeNodeChild(pNode);
+        float* ptr = GetArrayByTreeNode(pNode);
+        for(int i = 0; i < 12; ++i)
+            vvertices[0].push_back(ptr[i]);
+        delete ptr;
         return;
     }
 
@@ -632,7 +641,7 @@ void QuadTree::MaintainNodesByMBR_Recursion(const double& minx, const double& ma
         }
     }
     for(int i = 0; i < CHILD_NUM; ++i)
-        MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i]);
+        MaintainNodesByMBR_Recursion(minx, maxx, miny, maxy, xcenter, ycenter, pNode->child[i], vvertices);
 }
 
 

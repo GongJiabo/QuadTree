@@ -9,7 +9,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);      
 void processInput(GLFWwindow *window);                                      // 处理键盘事件，根据键盘按键变移动相机位置
 void printCameraInfo();
 
-
 int main()
 {
     // 查看类对象所占内存大小
@@ -49,7 +48,7 @@ int main()
     // GLFW键盘监听
     glfwSetKeyCallback(window, key_callback);
     // 设置画面位于屏幕上的位置
-    glfwSetWindowPos(window, 0, 0);
+//    glfwSetWindowPos(window, 0, 0);
     
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -147,15 +146,14 @@ int main()
     // QuadTree
     DrawMethod_OneTree drawOneTree;
     drawOneTree.initQuadTree(TREE_DEPTH, MAX_OBJECT, Rect(LB_X, LB_Y, RT_X, RT_Y));
-    
-    // ------------------------------------
-    // 创建顶点缓冲对象VBO与顶点数组对象VAO
-    glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
-    glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
+
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        // 创建顶点缓冲对象VBO与顶点数组对象VAO
+        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
+        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
         
         // 节点评价
         // 设置需要显示的depth阈值，父tile深度
@@ -189,11 +187,10 @@ int main()
         RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
         RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
         
-        
         // 创建变换矩阵
         // model 模型矩阵
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0/RT_X, 1.0/RT_Y, 1.0));
         // view 观察矩阵
         glm::mat4 view = camera.GetViewMatrix();
@@ -259,13 +256,12 @@ int main()
         // -----------------------------------------------------------------------  --------
         glfwSwapBuffers(window);
         glfwPollEvents();
+        
+        // optional: de-allocate all resources once they've outlived their purpose:
+        // ------------------------------------------------------------------------
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
     }
-
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
