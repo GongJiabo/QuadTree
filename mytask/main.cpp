@@ -8,7 +8,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);              // 回调函数，窗口变换
 void processInput(GLFWwindow *window);                                      // 处理键盘事件，根据键盘按键变移动相机位置
 void printCameraInfo();
-
+void renderText_perFrame();
 int main()
 {
     // 查看类对象所占内存大小
@@ -146,15 +146,11 @@ int main()
     // QuadTree
     DrawMethod_OneTree drawOneTree;
     drawOneTree.initQuadTree(TREE_DEPTH, MAX_OBJECT, Rect(LB_X, LB_Y, RT_X, RT_Y));
-
+    
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // 创建顶点缓冲对象VBO与顶点数组对象VAO
-        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
-        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
-        
         // 节点评价
         // 设置需要显示的depth阈值，父tile深度
         float l = abs(camera.Position[2]);
@@ -175,17 +171,23 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-        // 绘制文字
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-        RenderText(textShader, str_fps, 10.0f, 10.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
-        RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
-        RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+//        // 创建顶点缓冲对象VBO与顶点数组对象VAO
+//        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
+//        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
+//        // 绘制文字
+//        glBindVertexArray(VAO);
+//        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+//        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+//        RenderText(textShader, str_fps, 10.0f, 10.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+//        RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+//        RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+//        glBindVertexArray(0);
+//        glDeleteBuffers(1, &VBO);
+//        glDeleteVertexArrays(1, &VAO);
+//        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
         
         // 创建变换矩阵
         // model 模型矩阵
@@ -207,6 +209,10 @@ int main()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
         ourShader.setMat4("model", model);
+        
+        // 创建顶点缓冲对象VBO与顶点数组对象VAO
+        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
+        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
         
         switch (cType)
         {
@@ -250,17 +256,11 @@ int main()
             default:
                 break;
         }
-        
+     
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // 交换缓冲并查询IO事件
-        // -----------------------------------------------------------------------  --------
         glfwSwapBuffers(window);
         glfwPollEvents();
-        
-        // optional: de-allocate all resources once they've outlived their purpose:
-        // ------------------------------------------------------------------------
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
     }
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -371,4 +371,9 @@ void printCameraInfo()
     std::cout <<"CAMERA POS: " <<camera.Position[0] << "  " <<camera.Position[1]<<"  "<<camera.Position[2]<<std::endl;
     std::cout <<"CAMERA DIR: " <<camera.Front[0] << "  " <<camera.Front[1]<<"  "<<camera.Front[2] << std::endl;
     std::cout <<"-----------------------------"<< std::endl;
+}
+
+void renderText_perFrame()
+{
+    
 }

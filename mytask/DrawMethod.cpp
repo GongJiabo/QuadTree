@@ -664,6 +664,7 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
     // 参数含义: 要使能的顶点属性索引，这里要说明，0表示使能顶点属性中的位置信息，也就是坐标值
     glEnableVertexAttribArray(0);
     
+    
     // 两次缓冲 子父层分开绘制 在10层性能提高(fps: 9 -> 17)
     // 应该尽量减少glBufferdata调用的次数
     for(int i = 0; i < 2; ++i)
@@ -672,33 +673,26 @@ void DrawMethod_OneTree::drawLayers_MBR(Shader& ourShader)
         float *pdraw = new float[vvterices[i].size()];
         copy(vvterices[i].begin(), vvterices[i].end(), pdraw);
         
-        glBufferData(GL_ARRAY_BUFFER, vvterices[i].size() * sizeof(float), pdraw , GL_STREAM_DRAW);
+        // 为什么buffer显存总在窗口关闭terminate后全部释放？？？
+        glBufferData(GL_ARRAY_BUFFER, vvterices[i].size() * sizeof(float), pdraw , GL_DYNAMIC_COPY);
 //        glBufferSubData(GL_ARRAY_BUFFER, 0, vvterices[i].size() * sizeof(float), pdraw);
         
 //        // 获取缓冲区的映射指针ptr
 //        void * ptr = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 //        // 拷贝我们的数据到指针所指向的位置
-//        memcpy(ptr, pdraw, vvterices[i].size() * sizeof(float));
+//        memcpy(ptr,  static_cast<void*>(pdraw), vvterices[i].size() * sizeof(float));
 //        // 使用完之后释放映射的指针
 //        glUnmapBuffer(GL_ARRAY_BUFFER);
 
-    
+        // TO BE OPTIMIZED...
         for(int j = 0; j < vvterices[i].size()/12; ++j)
             glDrawArrays(GL_LINE_LOOP, j*4, 4);
-//        int *arrayfirsts = new int[vvterices[i].size()/12];
-//        int *arraycounts = new int[vvterices[i].size()/12];
-//        for(int j = 0; j < vvterices[i].size()/12; ++j)
-//        {
-//            arrayfirsts[j] = j*4;
-//            arraycounts[j] = 4;
-//        }
-//        glMultiDrawArrays(GL_LINE_LOOP, arrayfirsts, arraycounts, vvterices[i].size()/12);
-//        delete []arraycounts;
-//        delete []arrayfirsts;
-        
+    
         delete []pdraw;
     }
     vvterices.clear();
-
     glUnbind();
+    // optional: de-allocate all resources once they've outlived their purpose:
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
 }
