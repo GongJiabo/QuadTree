@@ -171,22 +171,22 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         
-//        // 创建顶点缓冲对象VBO与顶点数组对象VAO
-//        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
-//        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
-//        // 绘制文字
-//        glBindVertexArray(VAO);
-//        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-//        glEnableVertexAttribArray(0);
-//        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-//        RenderText(textShader, str_fps, 10.0f, 10.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
-//        RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
-//        RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
-//        glBindVertexArray(0);
-//        glDeleteBuffers(1, &VBO);
-//        glDeleteVertexArrays(1, &VAO);
-//        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // 创建顶点缓冲对象VBO与顶点数组对象VAO
+        glGenVertexArrays(1, &VAO); // void glGenVertexArrays(GLsizei n, GLuint *arrays); 将ID绑定到顶点数组对象上。任何随后的顶点属性调用都会储存在这个VAO中
+        glGenBuffers(1, &VBO);      // void glGenBuffers(GLsizei n,GLuint * buffers); 第一个参数是要生成的缓冲对象的数量，第二个是要输入用来存储缓冲对象名称的数组
+        // 绘制文字
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+        RenderText(textShader, str_fps, 10.0f, 10.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+        RenderText(textShader, str_type, 10.0f, 50.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+        RenderText(textShader, "Depth: "+to_string(showDepth), 10.0f, 90.0f, 0.50f, glm::vec3(0.5, 0.8f, 0.2f));
+        glBindVertexArray(0);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         
         
         // 创建变换矩阵
